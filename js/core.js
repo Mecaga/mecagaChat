@@ -1,44 +1,44 @@
-// ====================== CORE DATA ======================
-// Bu dosyada SADECE veri ve global durumlar var
-// UI, Firebase, render YOK
+// Kayıt ol
+async function register(email, password, name, avatarFile){
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    currentUser = userCredential.user;
 
-// Kullanıcı
-let user = {
-  name: "Misafir",
-  id: "0000"
-};
+    let avatarURL = "";
+    if(avatarFile){
+      const avatarRef = storage.ref().child(`avatars/${currentUser.uid}`);
+      await avatarRef.put(avatarFile);
+      avatarURL = await avatarRef.getDownloadURL();
+    }
 
-// Arkadaş listesi
-let friends = [
-  { name: "Ahmet", id: "1001", online: true },
-  { name: "Ayşe", id: "1002", online: false }
-];
+    await db.ref(`users/${currentUser.uid}`).set({
+      name: name,
+      email: email,
+      avatarURL: avatarURL
+    });
 
-// Aktif sohbetler
-// { name, id, type: "friend" | "group" }
-let activeChats = [];
+    showChat(name);
 
-// Kanallar ve mesajlar
-// "Genel#0000": { messages: [], owner: null }
-let channels = {
-  "Genel#0000": {
-    messages: [],
-    owner: null
+  } catch(e){
+    alert(e.message);
   }
-};
+}
 
-// Şu an açık olan sohbet
-let currentChannel = "Genel#0000";
+// Giriş yap
+async function login(email, password){
+  try{
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    currentUser = userCredential.user;
+    const snapshot = await db.ref(`users/${currentUser.uid}/name`).get();
+    showChat(snapshot.val());
+  } catch(e){
+    alert(e.message);
+  }
+}
 
-// Okunmamış mesajlar
-// "Ahmet#1001": true
-let unreadMessages = {};
-
-// Arkadaşlık istekleri
-// { fromId, fromName, toId, status }
-let friendRequests = [];
-
-// Bildirimler
-// { userId, message, read }
-let notifications = [];
-
+// Chat ekranını göster
+function showChat(name){
+  document.getElementById("authDiv").style.display = "none";
+  document.getElementById("chatDiv").style.display = "block";
+  document.getElementById("userName").innerText = name;
+}
