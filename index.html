@@ -3,49 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <title>mecagaChat</title>
+
+  <!-- Mobil uyum -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Cihaz bazlı ölçek */
+    body.mobile {
+      zoom: 1.1;
+    }
+
+    body.desktop {
+      zoom: 1;
+      max-width: 1200px;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
 
-<!-- ÜST BAR -->
-<div id="topBar">
-  <span id="profile" onclick="openProfile()">Misafir</span>
-  <button onclick="openMail()">📮</button>
-  <button onclick="toggleFriendsPanel()">👥</button>
-  <button onclick="toggleChatPanel()">📦</button>
-</div>
+  <!-- ÜST BAR -->
+  <header>
+    <h2>💬 mecagaChat</h2>
+    <div id="profile">Misafir#0001</div>
+  </header>
 
-<!-- PROFİL PANEL -->
-<div id="profilePanel" style="display:none">
-  <input id="changeName" placeholder="Yeni isim">
-  <button onclick="saveName()">Kaydet</button>
-</div>
+  <!-- ANA ALAN -->
+  <main>
+    <!-- SOL PANEL -->
+    <aside id="friendsPanel">
+      <h3>Arkadaşlar</h3>
+      <ul id="friendsList"></ul>
 
-<!-- POSTA PANEL -->
-<div id="mailPanel" style="display:none"></div>
+      <h3>Kanallar</h3>
+      <ul id="channelList"></ul>
 
-<!-- ARKADAŞ PANEL -->
-<div id="friendsPanel" style="display:none">
-  <ul id="friendsList"></ul>
-</div>
+      <h3>Aktif Sohbetler</h3>
+      <ul id="activeChats"></ul>
+    </aside>
 
-<!-- CHAT PANEL -->
-<div id="chatPanel" style="display:none">
-  <ul id="channelList"></ul>
-  <ul id="activeChats"></ul>
-</div>
+    <!-- CHAT PANEL -->
+    <section id="chatPanel">
+      <h3 id="chatTitle">Sohbet</h3>
+      <div id="messages"></div>
 
-<!-- CHAT -->
-<h3 id="chatTitle">Genel#0000</h3>
-<div id="messages"></div>
+      <div id="sendBox">
+        <input id="messageInput" placeholder="Mesaj yaz..." />
+        <button onclick="sendMessage()">Gönder</button>
+      </div>
+    </section>
+  </main>
 
-<input id="messageInput" placeholder="Mesaj yaz...">
-<button onclick="sendMessage()">Gönder</button>
+  <!-- POSTA -->
+  <div id="mailPanel" style="display:none"></div>
 
-<!-- JS SIRASI ÇOK ÖNEMLİ -->
-<script src="js/data.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/main.js"></script>
+  <!-- PROFİL -->
+  <div id="profilePanel" style="display:none">
+    <input id="changeName" placeholder="Yeni isim">
+    <button onclick="saveName()">Kaydet</button>
+  </div>
+
+  <!-- JS -->
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- CİHAZ ALGILAMA -->
+  <script>
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      document.body.classList.add("mobile");
+      console.log("Mobil cihaz algılandı");
+    } else {
+      document.body.classList.add("desktop");
+      console.log("Bilgisayar algılandı");
+    }
+  </script>
 
 </body>
 </html>
