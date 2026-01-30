@@ -1,20 +1,49 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>mecagaChat</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>mecagaChat</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div id="app">
-    <div id="chatBox"></div>
-
-    <div id="inputBar">
-        <input id="messageInput" type="text" placeholder="Mesaj yaz...">
-        <button id="sendBtn">Gönder</button>
-    </div>
+<!-- ÜST BAR -->
+<div id="topBar">
+  <span id="profile" onclick="openProfile()">Kullanıcı#0001</span>
+  <button onclick="openMail()">📮</button>
 </div>
+
+<!-- PROFİL PANEL -->
+<div id="profilePanel" style="display:none">
+  <input id="changeName" placeholder="Yeni isim">
+  <button onclick="saveName()">Kaydet</button>
+</div>
+
+<!-- POSTA PANEL -->
+<div id="mailPanel" style="display:none">
+  <h3>Posta Kutusu</h3>
+</div>
+
+<!-- SOL PANEL -->
+<div id="friendsPanel">
+  <h3>Arkadaşlar</h3>
+  <ul id="friendsList"></ul>
+</div>
+
+<div id="chatPanel">
+  <h3>Kanallar</h3>
+  <ul id="channelList"></ul>
+
+  <h3>Aktif Sohbetler</h3>
+  <ul id="activeChats"></ul>
+</div>
+
+<!-- CHAT -->
+<h2 id="chatTitle">Sohbet</h2>
+<div id="messages"></div>
+
+<input id="messageInput" placeholder="Mesaj yaz">
+<button onclick="sendMessage()">Gönder</button>
 
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
