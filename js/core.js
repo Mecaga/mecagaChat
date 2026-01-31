@@ -1,23 +1,23 @@
-function showRegister() {
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("registerScreen").classList.remove("hidden");
-}
-
-function showLogin() {
-  document.getElementById("registerScreen").classList.add("hidden");
-  document.getElementById("loginScreen").classList.remove("hidden");
-}
-
-function login() {
+window.login = function () {
   enterApp();
 }
 
-function register() {
-  let username = document.getElementById("regUsername").value;
+window.register = function () {
+  const username = document.getElementById("regUsername").value;
   if (username) {
     document.getElementById("myUser").innerText = username + "#0001";
   }
   enterApp();
+}
+
+window.showRegister = function () {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("registerScreen").classList.remove("hidden");
+}
+
+window.showLogin = function () {
+  document.getElementById("registerScreen").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
 }
 
 function enterApp() {
