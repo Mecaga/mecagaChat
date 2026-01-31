@@ -1,56 +1,46 @@
 window.login = function () {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+  const email = loginEmail.value;
+  const password = loginPassword.value;
 
   auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      document.getElementById("myUser").innerText =
-        user.email.split("@")[0] + "#" + user.uid.slice(0, 4);
+    .then(res => {
+      const user = res.user;
+      myUser.innerText = user.email.split("@")[0] + "#" + user.uid.slice(0,4);
       enterApp();
     })
-    .catch((error) => {
-      alert("❌ Giriş başarısız: " + error.message);
-    });
+    .catch(err => alert(err.message));
 };
 
 window.register = function () {
-  const username = document.getElementById("regUsername").value;
-  const email = document.getElementById("regEmail").value;
-  const password = document.getElementById("regPassword").value;
+  const username = regUsername.value;
+  const email = regEmail.value;
+  const password = regPassword.value;
 
   auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-
-      // kullanıcıyı database'e kaydet
+    .then(res => {
+      const user = res.user;
       db.ref("users/" + user.uid).set({
-        username: username,
-        email: email
+        username,
+        email
       });
-
-      document.getElementById("myUser").innerText =
-        username + "#" + user.uid.slice(0, 4);
-
+      myUser.innerText = username + "#" + user.uid.slice(0,4);
       enterApp();
     })
-    .catch((error) => {
-      alert("❌ Kayıt başarısız: " + error.message);
-    });
+    .catch(err => alert(err.message));
 };
 
-window.showRegister = function () {
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("registerScreen").classList.remove("hidden");
+window.showRegister = () => {
+  loginScreen.classList.add("hidden");
+  registerScreen.classList.remove("hidden");
 };
 
-window.showLogin = function () {
-  document.getElementById("registerScreen").classList.add("hidden");
-  document.getElementById("loginScreen").classList.remove("hidden");
+window.showLogin = () => {
+  registerScreen.classList.add("hidden");
+  loginScreen.classList.remove("hidden");
 };
 
 function enterApp() {
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("registerScreen").classList.add("hidden");
-  document.getElementById("mainScreen").classList.remove("hidden");
+  loginScreen.classList.add("hidden");
+  registerScreen.classList.add("hidden");
+  mainScreen.classList.remove("hidden");
 }
