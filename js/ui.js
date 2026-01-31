@@ -1,3 +1,5 @@
+window.closeAllPanels();
+
 const panels = ["friendsPanel", "mailPanel", "boxPanel"];
 
 function closeAllPanels() {
