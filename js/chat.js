@@ -2,7 +2,7 @@
 const db = firebase.database();
 const auth = firebase.auth();
 
-// Aktif kanal (şimdilik sadece genel)
+// Aktif kanal
 let currentChannel = "general";
 
 /* ================= MESAJ GÖNDER ================= */
@@ -10,12 +10,11 @@ function sendMessage() {
   const input = document.getElementById("messageInput");
   const text = input.value.trim();
   const user = auth.currentUser;
-
   if (!text || !user) return;
 
   const messageData = {
     uid: user.uid,
-    username: user.displayName || "Anonim",
+    username: user.displayName || user.email.split("@")[0],
     text: text,
     time: Date.now()
   };
@@ -40,47 +39,46 @@ function loadMessages() {
 /* ================= MESAJI EKRANA BAS ================= */
 function showMessage(msg) {
   const messagesDiv = document.getElementById("messages");
+  if (!messagesDiv) return;
 
   const div = document.createElement("div");
-  div.className = "message";
+  div.classList.add("message");
 
-  // Kim gönderdi
-  const userSpan = document.createElement("div");
-  userSpan.className = "user";
-  userSpan.innerText = msg.username || "Anonim";
-  div.appendChild(userSpan);
-
-  // Mesaj metni
-  const textDiv = document.createElement("div");
-  textDiv.innerText = msg.text;
-  div.appendChild(textDiv);
-
-  // Kendi mesajımızsa sağa yasla
   const user = auth.currentUser;
-  if (user && msg.uid === user.uid) {
+
+  if (msg.uid === (user ? user.uid : "")) {
     div.classList.add("me");
   } else {
     div.classList.add("other");
   }
 
+  const userDiv = document.createElement("div");
+  userDiv.className = "user";
+  userDiv.innerText = msg.username || "Bilinmeyen";
+
+  const textDiv = document.createElement("div");
+  textDiv.className = "text";
+  textDiv.innerText = msg.text;
+
+  div.appendChild(userDiv);
+  div.appendChild(textDiv);
+
   messagesDiv.appendChild(div);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
+/* ================= SAYFA YÜKLENDİĞİNDE ================= */
+auth.onAuthStateChanged(user => {
+  if (user) loadMessages();
+});
+
 /* ================= ENTER İLE GÖNDER ================= */
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("messageInput");
-  input.addEventListener("keypress", function (e) {
+  input.addEventListener("keypress", e => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
-});
-
-/* ================= SAYFA AÇILINCA MESAJ YÜKLE ================= */
-auth.onAuthStateChanged(user => {
-  if (user) {
-    loadMessages();
-  }
 });
