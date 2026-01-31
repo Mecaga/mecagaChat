@@ -4,25 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MecagaChat</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<!-- GİRİŞ EKRANI -->
-<div id="loginScreen" class="screen auth-box">
-  <h1 class="logo">💬 MecagaChat</h1>
+<!-- GİRİŞ -->
+<div id="loginScreen" class="screen auth-box fade-in">
+  <h1 class="logo glow">💬 MecagaChat</h1>
   <p class="welcome">Tekrar hoş geldin 👋</p>
 
   <input id="loginEmail" placeholder="Gmail">
   <input id="loginPassword" type="password" placeholder="Şifre">
 
   <button onclick="login()">Giriş Yap</button>
-  <p class="link" onclick="showRegister()">Hesabın yok mu? Kayıt ol</p>
+  <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
 </div>
 
-<!-- KAYIT EKRANI -->
-<div id="registerScreen" class="screen auth-box hidden">
-  <h1 class="logo">✨ MecagaChat</h1>
+<!-- KAYIT -->
+<div id="registerScreen" class="screen auth-box fade-in hidden">
+  <h1 class="logo glow">✨ MecagaChat</h1>
   <p class="welcome">MecagaChat’e hoş geldiniz 🎉</p>
 
   <input id="regUsername" placeholder="Kullanıcı adı">
@@ -30,7 +30,7 @@
   <input id="regPassword" type="password" placeholder="Şifre">
 
   <button onclick="register()">Kayıt Ol</button>
-  <p class="link" onclick="showLogin()">Zaten hesabım var</p>
+  <button class="secondary" onclick="showLogin()">Geri Dön</button>
 </div>
 
 <!-- ANA EKRAN -->
@@ -60,10 +60,10 @@
 
 </div>
 
-<script src="js/core.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/storage.js"></script>
+<script src="./js/core.js"></script>
+<script src="./js/ui.js"></script>
+<script src="./js/chat.js"></script>
+<script src="./js/storage.js"></script>
 
 </body>
 </html>
