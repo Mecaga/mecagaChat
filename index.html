@@ -55,16 +55,19 @@
   </div>
 
   <!-- CHAT AREA -->
-  <div class="content">
-    <div id="chatTitle">Genel Sohbet</div>
+ <div class="content">
+  <div id="chatTitle">Genel Sohbet</div>
+  <div id="messages"></div>
+  <input id="messageInput" placeholder="Mesaj yaz...">
+  <button onclick="sendMessage()">Gönder</button>
+</div>
 
-    <div id="messages"></div>
+<div class="account-actions">
+  <button onclick="deleteAccount()" class="danger">
+    🗑️ Hesabı Sil
+  </button>
+</div>
 
-    <div class="messageBox">
-      <input id="messageInput" placeholder="Mesaj yaz...">
-      <button onclick="sendMessage()">Gönder</button>
-    </div>
-  </div>
 
   <!-- PANELS -->
   <div id="friendsPanel" class="panel hidden"></div>
