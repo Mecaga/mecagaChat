@@ -1,24 +1,11 @@
-window.closeAllPanels();
-
-const panels = ["friendsPanel", "mailPanel", "boxPanel"];
-
-function closeAllPanels() {
-  panels.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
-  });
-}
-
-function togglePanel(panelId) {
-  const panel = document.getElementById(panelId);
-  const isOpen = !panel.classList.contains("hidden");
-
+const panels=['friendsPanel','mailPanel','boxPanel'];
+function closeAllPanels(){panels.forEach(p=>document.getElementById(p).classList.add('hidden'))}
+function togglePanel(id){
+  const el=document.getElementById(id);
+  const open=!el.classList.contains('hidden');
   closeAllPanels();
-
-  if (!isOpen) {
-    panel.classList.remove("hidden");
-  }
+  if(!open)el.classList.remove('hidden');
 }
-
-window.toggleFriends = () => togglePanel("friendsPanel");
-window.toggleMail = () => togglePanel("mailPanel");
-window.toggleBox = () => togglePanel("boxPanel");
+function toggleFriends(){togglePanel('friendsPanel')}
+function toggleMail(){togglePanel('mailPanel')}
+function toggleBox(){togglePanel('boxPanel')}
