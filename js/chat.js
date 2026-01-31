@@ -85,3 +85,18 @@ function joinChannel() {
   closeModals();
   listenMessages();
 }
+
+function sendFriendRequest(targetUid, targetName) {
+  const myUid = auth.currentUser.uid;
+  const myName = auth.currentUser.displayName;
+
+  db.ref("friendRequests/" + targetUid + "/" + myUid).set({
+    username: myName
+  });
+
+  db.ref("notifications/" + targetUid).push(
+    myName + " sana arkadaşlık isteği gönderdi ❤️"
+  );
+
+  alert("Arkadaşlık isteği gönderildi");
+}
