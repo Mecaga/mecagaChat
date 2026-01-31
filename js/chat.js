@@ -147,3 +147,29 @@ function deleteAccount() {
   auth.signOut();
   alert("Hesap silindi");
 }
+
+ // İSTEKLERİ YÜKLE BASİT
+
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) return;
+  const uid = user.uid;
+  const db = firebase.database();
+
+  db.ref("friendRequests/" + uid).on("value", snap => {
+    const box = document.getElementById("requestsList");
+    if (!box) return;
+    box.innerHTML = "";
+
+    snap.forEach(req => {
+      const senderUid = req.key;
+
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p>Arkadaş isteği</p>
+        <button onclick="acceptFriend('${senderUid}')">✅</button>
+        <button onclick="rejectFriend('${senderUid}')">❌</button>
+      `;
+      box.appendChild(div);
+    });
+  });
+});
