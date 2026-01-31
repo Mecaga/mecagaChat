@@ -1,19 +1,11 @@
-window.changeUsername = () => {
-  if (!auth.currentUser) {
-    alert("❌ Giriş yapmalısınız!");
-    return;
-  }
+window.toggleFriends = () => togglePanel("friendsPanel");
+window.toggleMail = () => togglePanel("mailPanel");
+window.toggleBox = () => togglePanel("boxPanel");
 
-  const newName = prompt("Yeni kullanıcı adı:");
-  if (!newName) return;
-
-  const uid = auth.currentUser.uid;
-
-  // Firebase Realtime Database güncelle
-  db.ref("users/" + uid).update({ username: newName })
-    .then(() => {
-      myUser.innerText = newName + "#" + uid.slice(0, 4);
-      alert("✅ Kullanıcı adınız güncellendi!");
-    })
-    .catch(err => alert("❌ Hata: " + err.message));
-};
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  panel.classList.toggle("hidden");
+  ["friendsPanel","mailPanel","boxPanel"].forEach(pid => {
+    if(pid!==id) document.getElementById(pid).classList.add("hidden");
+  });
+}
