@@ -1,3 +1,13 @@
+window.showRegister = function () {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("registerScreen").classList.remove("hidden");
+}
+
+window.showLogin = function () {
+  document.getElementById("registerScreen").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+}
+
 window.login = function () {
   enterApp();
 }
@@ -8,16 +18,6 @@ window.register = function () {
     document.getElementById("myUser").innerText = username + "#0001";
   }
   enterApp();
-}
-
-window.showRegister = function () {
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("registerScreen").classList.remove("hidden");
-}
-
-window.showLogin = function () {
-  document.getElementById("registerScreen").classList.add("hidden");
-  document.getElementById("loginScreen").classList.remove("hidden");
 }
 
 function enterApp() {
