@@ -58,27 +58,29 @@
   <div class="content">
     <div id="chatTitle">Genel Sohbet</div>
     <div id="messages"></div>
-    <input id="messageInput" placeholder="Mesaj yaz...">
-    <button onclick="sendMessage()">Gönder</button>
+
+    <div class="chat-input">
+      <input id="messageInput" placeholder="Mesaj yaz...">
+      <button onclick="sendMessage()">Gönder</button>
+    </div>
   </div>
 
   <!-- ACCOUNT ACTION -->
   <div class="account-actions">
-    <button onclick="deleteAccount()" class="danger">
-      🗑️ Hesabı Sil
-    </button>
+    <button onclick="deleteAccount()" class="danger">🗑️ Hesabı Sil</button>
   </div>
 
-  <!-- PANELS -->
+  <!-- FRIENDS PANEL -->
   <div id="friendsPanel" class="panel hidden">
-  <h3>❤️ Arkadaşlar</h3>
+    <h3>❤️ Arkadaşlar</h3>
 
-  <input id="addFriendInput" placeholder="kullanici#0000">
-  <button onclick="sendFriendRequest()">Ekle</button>
+    <input id="addFriendInput" placeholder="kullanici#0000">
+    <button onclick="sendFriendRequest()">Ekle</button>
 
-  <div id="friendsList"></div>
-</div>
+    <div id="friendsList"></div>
+  </div>
 
+  <!-- MAIL & BOX -->
   <div id="mailPanel" class="panel hidden"></div>
   <div id="boxPanel" class="panel hidden"></div>
 
@@ -103,7 +105,7 @@
     <button onclick="closeModals()">Kapat</button>
   </div>
 
-    <!-- DELETE ACCOUNT CONFIRM -->
+  <!-- DELETE CONFIRM -->
   <div id="deleteConfirm" class="modal hidden">
     <h3>Hesabı Sil</h3>
     <p>Bu işlem geri alınamaz.</p>
@@ -111,7 +113,7 @@
     <button onclick="closeModals()">İptal</button>
   </div>
 
-</div> <!-- mainScreen -->
+</div>
 
 <!-- ================= FIREBASE ================= -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -126,3 +128,4 @@
 
 </body>
 </html>
+  
