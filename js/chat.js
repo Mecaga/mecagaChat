@@ -123,3 +123,27 @@ function rejectFriend(senderUid, senderName) {
     auth.currentUser.displayName + " isteğini reddetti ❌"
   );
 }
+
+// ================= Hesap Sil Fonksiyonu =================
+function deleteAccount() {
+  if (!confirm("Hesabın silinecek. Emin misin?")) return;
+
+  const uid = auth.currentUser.uid;
+
+  // Kullanıcıyı pasif yap
+  db.ref("users/" + uid).update({
+    username: "Silinmiş Kullanıcı",
+    deleted: true
+  });
+
+  // Arkadaş listelerinden kaldır
+  db.ref("users").once("value", snap => {
+    snap.forEach(user => {
+      db.ref("users/" + user.key + "/friends/" + uid).remove();
+    });
+  });
+
+  // Auth çıkış
+  auth.signOut();
+  alert("Hesap silindi");
+}
