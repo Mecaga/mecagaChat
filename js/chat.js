@@ -8,16 +8,29 @@ function login() {
 }
 
 function register() {
-  const email = regEmail.value;
-  const pass = regPassword.value;
-  const username = regUsername.value;
+  const email = regEmail.value.trim();
+  const pass = regPassword.value.trim();
+  const username = regUsername.value.trim();
+
+  if (!email || !pass || !username) {
+    alert("Tüm alanları doldur");
+    return;
+  }
 
   auth.createUserWithEmailAndPassword(email, pass)
     .then(res => {
-      return res.user.updateProfile({ displayName: username });
+      return res.user.updateProfile({
+        displayName: username
+      });
     })
-    .catch(err => alert(err.message));
+    .then(() => {
+      showMain();
+    })
+    .catch(err => {
+      alert(err.message);
+    });
 }
+
 
 // ================= MESSAGES =================
 function sendMessage() {
