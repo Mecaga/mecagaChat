@@ -8,21 +8,34 @@
 </head>
 <body>
 
-<!-- GİRİŞ / KAYIT -->
-<div id="authScreen" class="screen">
-  <h1>MecagaChat</h1>
+<!-- GİRİŞ EKRANI -->
+<div id="loginScreen" class="screen auth-box">
+  <h1 class="logo">💬 MecagaChat</h1>
+  <p class="welcome">Tekrar hoş geldin 👋</p>
 
-  <input id="username" placeholder="Kullanıcı adı">
-  <input id="password" type="password" placeholder="Şifre">
+  <input id="loginEmail" placeholder="Gmail">
+  <input id="loginPassword" type="password" placeholder="Şifre">
 
   <button onclick="login()">Giriş Yap</button>
+  <p class="link" onclick="showRegister()">Hesabın yok mu? Kayıt ol</p>
+</div>
+
+<!-- KAYIT EKRANI -->
+<div id="registerScreen" class="screen auth-box hidden">
+  <h1 class="logo">✨ MecagaChat</h1>
+  <p class="welcome">MecagaChat’e hoş geldiniz 🎉</p>
+
+  <input id="regUsername" placeholder="Kullanıcı adı">
+  <input id="regEmail" placeholder="Gmail">
+  <input id="regPassword" type="password" placeholder="Şifre">
+
   <button onclick="register()">Kayıt Ol</button>
+  <p class="link" onclick="showLogin()">Zaten hesabım var</p>
 </div>
 
 <!-- ANA EKRAN -->
 <div id="mainScreen" class="screen hidden">
 
-  <!-- ÜST BAR -->
   <div class="topbar">
     <div id="myUser" onclick="changeUsername()">kullanici#0001</div>
 
@@ -33,7 +46,6 @@
     </div>
   </div>
 
-  <!-- ORTA -->
   <div class="content">
     <div id="chatTitle">Genel Sohbet</div>
     <div id="messages"></div>
@@ -42,7 +54,6 @@
     <button onclick="sendMessage()">Gönder</button>
   </div>
 
-  <!-- PANELLER -->
   <div id="friendsPanel" class="panel hidden">❤️ Arkadaşlar</div>
   <div id="mailPanel" class="panel hidden">📧 Bildirimler</div>
   <div id="boxPanel" class="panel hidden">📦 Kanallar</div>
