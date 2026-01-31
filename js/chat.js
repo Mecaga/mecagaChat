@@ -1,15 +1,16 @@
-// Firebase referansları
+// Firebase
 const db = firebase.database();
 const auth = firebase.auth();
 
-// Aktif kanal (şimdilik sadece genel)
+// Aktif kanal
 let currentChannel = "general";
 
 /* ================= MESAJ GÖNDER ================= */
 function sendMessage() {
   const input = document.getElementById("messageInput");
-  const text = input.value.trim();
+  if (!input) return;
 
+  const text = input.value.trim();
   if (text === "") return;
 
   const user = auth.currentUser;
@@ -17,21 +18,26 @@ function sendMessage() {
 
   const messageData = {
     uid: user.uid,
+    username: user.displayName || "Anonim",
     text: text,
     time: Date.now()
   };
 
-  db.ref("channels/" + currentChannel + "/messages").push(messageData);
-
+  db.ref(`channels/${currentChannel}/messages`).push(messageData);
   input.value = "";
 }
 
-/* ================= MESAJLARI OKU ================= */
+/* ================= MESAJLARI YÜKLE ================= */
 function loadMessages() {
   const messagesDiv = document.getElementById("messages");
+  if (!messagesDiv) return;
+
   messagesDiv.innerHTML = "";
 
-  db.ref("channels/" + currentChannel + "/messages")
+  // ÖNCE eski listener'ı kapat
+  db.ref(`channels/${currentChannel}/messages`).off();
+
+  db.ref(`channels/${currentChannel}/messages`)
     .limitToLast(50)
     .on("child_added", snapshot => {
       const msg = snapshot.val();
@@ -39,31 +45,42 @@ function loadMessages() {
     });
 }
 
-/* ================= MESAJI EKRANA BAS ================= */
+/* ================= MESAJI GÖSTER ================= */
 function showMessage(msg) {
   const messagesDiv = document.getElementById("messages");
+  const user = auth.currentUser;
 
   const div = document.createElement("div");
-  div.className = "message";
+  div.classList.add("message");
 
-  div.innerText = msg.text;
+  if (user && msg.uid === user.uid) {
+    div.classList.add("me");
+  } else {
+    div.classList.add("other");
+  }
+
+  div.innerHTML = `
+    <div class="user">${msg.username}</div>
+    <div class="text">${msg.text}</div>
+  `;
 
   messagesDiv.appendChild(div);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-/* ================= SAYFA AÇILINCA ================= */
+/* ================= AUTH ================= */
 auth.onAuthStateChanged(user => {
   if (user) {
     loadMessages();
   }
 });
 
-
+/* ================= ENTER İLE GÖNDER ================= */
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("messageInput");
+  if (!input) return;
 
-  input.addEventListener("keypress", function (e) {
+  input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
