@@ -1,6 +1,6 @@
 /* ================= GENEL ================= */
 const panels = ["friendsPanel", "mailPanel", "boxPanel"];
-const modals = ["channelForm", "joinForm", "userMenu"];
+const modals = ["channelForm", "joinForm", "userMenu", "deleteConfirm"];
 
 function hideAllPanels() {
   panels.forEach(id => {
@@ -69,12 +69,4 @@ function openGeneralChannel() {
   hideAllPanels();
   hideAllModals();
   document.getElementById("chatTitle").innerText = "Genel Sohbet";
-}
-
-
-function hideAllPanels() {
-  document.getElementById("friendsPanel").classList.add("hidden");
-  document.getElementById("mailPanel").classList.add("hidden");
-  document.getElementById("boxPanel").classList.add("hidden");
-  document.getElementById("userMenu").classList.add("hidden");
 }
