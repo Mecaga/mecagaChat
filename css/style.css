@@ -1,64 +1,267 @@
-/* ================= PANELLER ================= */
-const panels = ["friendsPanel", "mailPanel", "boxPanel"];
-const modals = ["channelForm", "joinForm", "userMenu"];
-
-function hideAllPanels() {
-  panels.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
-  });
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-function hideAllModals() {
-  modals.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
-  });
+body {
+  background: #0f1220;
+  color: #fff;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
-function toggleFriends() {
-  const panel = document.getElementById("friendsPanel");
-  const isOpen = !panel.classList.contains("hidden");
-  hideAllPanels();
-  hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+/* ================= COMMON ================= */
+.hidden {
+  display: none !important;
 }
 
-function toggleMail() {
-  const panel = document.getElementById("mailPanel");
-  const isOpen = !panel.classList.contains("hidden");
-  hideAllPanels();
-  hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+.screen {
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
-function toggleBox() {
-  const panel = document.getElementById("boxPanel");
-  const isOpen = !panel.classList.contains("hidden");
-  hideAllPanels();
-  hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #5865f2;
+  color: #fff;
+  font-size: 14px;
 }
 
-/* ================= MODALLAR ================= */
-function showCreateChannel() {
-  hideAllPanels();
-  hideAllModals();
-  document.getElementById("channelForm").classList.remove("hidden");
+button.secondary {
+  background: #444;
 }
 
-function showJoinChannel() {
-  hideAllPanels();
-  hideAllModals();
-  document.getElementById("joinForm").classList.remove("hidden");
+button.danger {
+  background: #d9534f;
 }
 
-function toggleUserMenu() {
-  const menu = document.getElementById("userMenu");
-  const isOpen = !menu.classList.contains("hidden");
-  hideAllPanels();
-  hideAllModals();
-  if (!isOpen) menu.classList.remove("hidden");
+input {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  width: 100%;
 }
 
-function closeModals() {
-  hideAllModals();
+/* ================= AUTH ================= */
+.auth-box {
+  max-width: 360px;
+  margin: auto;
+  margin-top: 12vh;
+  padding: 20px;
+  background: #1b1f3b;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 10px;
+}
+
+/* ================= TOP BAR ================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #1b1f3b;
+}
+
+#myUser {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.top-buttons button {
+  margin-left: 6px;
+}
+
+/* ================= MAIN BUTTONS ================= */
+.mainButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background: #14162a;
+}
+
+/* ================= CHAT ================= */
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+}
+
+#chatTitle {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#messages {
+  flex: 1;
+  background: #101322;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.messageBox {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.messageBox input {
+  flex: 1;
+}
+
+/* ================= MESSAGE BUBBLES ================= */
+.message {
+  max-width: 70%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.message.me {
+  background: #5865f2;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message.other {
+  background: #2a2f5a;
+  margin-right: auto;
+  text-align: left;
+}
+
+.message .user {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+/* ================= PANELS ================= */
+.panel {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  width: 260px;
+  height: 60vh;
+  background: #1b1f3b;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+/* ================= MODALS ================= */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1b1f3b;
+  padding: 20px;
+  border-radius: 10px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+/* ================= ACCOUNT ACTIONS ================= */
+.account-actions {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.account-actions .danger {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* ================= CHAT INPUT ================= */
+.chat-input {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+#messageInput {
+  flex: 1;
+}
+
+.messageBox button {
+  white-space: nowrap;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .mainButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .mainButtons button {
+    width: 100%;
+  }
+
+  .content {
+    width: 95%;
+    margin: auto;
+  }
+
+  #messages {
+    height: 55vh;
+    overflow-y: auto;
+  }
+
+  .panel {
+    width: 90%;
+    right: 5%;
+    top: 70px;
+    max-height: 70vh;
+  }
+
+  .modal {
+    width: 90%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
 }
