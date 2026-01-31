@@ -1,4 +1,4 @@
-function sendMessage() {
+window.sendMessage = function () {
   let input = document.getElementById("messageInput");
   if (!input.value) return;
 
