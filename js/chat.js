@@ -1,175 +1,60 @@
-// ================= AUTH =================
-function login() {
-  const email = loginEmail.value;
-  const pass = loginPassword.value;
+// Firebase referansları
+const db = firebase.database();
+const auth = firebase.auth();
 
-  auth.signInWithEmailAndPassword(email, pass)
-    .catch(err => alert(err.message));
-}
+// Aktif kanal (şimdilik sadece genel)
+let currentChannel = "general";
 
-function register() {
-  const email = regEmail.value.trim();
-  const pass = regPassword.value.trim();
-  const username = regUsername.value.trim();
-
-  if (!email || !pass || !username) {
-    alert("Tüm alanları doldur");
-    return;
-  }
-
-  auth.createUserWithEmailAndPassword(email, pass)
-    .then(res => {
-      return res.user.updateProfile({
-        displayName: username
-      });
-    })
-    .then(() => {
-      showMain();
-    })
-    .catch(err => {
-      alert(err.message);
-    });
-}
-
-
-// ================= MESSAGES =================
+/* ================= MESAJ GÖNDER ================= */
 function sendMessage() {
-  const text = messageInput.value;
-  if (!text) return;
+  const input = document.getElementById("messageInput");
+  const text = input.value.trim();
 
-  const msg = {
-    user: auth.currentUser.displayName || "kullanici",
-    uid: auth.currentUser.uid,
+  if (text === "") return;
+
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const messageData = {
+    uid: user.uid,
     text: text,
     time: Date.now()
   };
 
-  db.ref("channels/" + currentChannel).push(msg);
-  messageInput.value = "";
+  db.ref("channels/" + currentChannel + "/messages").push(messageData);
+
+  input.value = "";
 }
 
-// ================= LISTEN =================
-function listenMessages() {
-  db.ref("channels/" + currentChannel).off();
+/* ================= MESAJLARI OKU ================= */
+function loadMessages() {
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = "";
 
-  db.ref("channels/" + currentChannel).on("child_added", snap => {
-    const m = snap.val();
-    const div = document.createElement("div");
-    div.innerText = `${m.user}: ${m.text}`;
-    document.getElementById("messages").appendChild(div);
-  });
-}
-
-// Genel sohbet otomatik
-listenMessages();
-
-// ================= CHANNEL =================
-function createChannel() {
-  const name = channelNameInput.value.trim();
-  if (!name) return;
-
-  currentChannel = name;
-  document.getElementById("chatTitle").innerText = name;
-  document.getElementById("messages").innerHTML = "";
-  closeModals();
-  listenMessages();
-}
-
-function joinChannel() {
-  const name = joinChannelInput.value.trim();
-  if (!name) return;
-
-  currentChannel = name;
-  document.getElementById("chatTitle").innerText = name;
-  document.getElementById("messages").innerHTML = "";
-  closeModals();
-  listenMessages();
-}
-
-// ================= ARKADASLIK AYARLARI =================
-function sendFriendRequest(targetUid, targetName) {
-  const myUid = auth.currentUser.uid;
-  const myName = auth.currentUser.displayName;
-
-  db.ref("friendRequests/" + targetUid + "/" + myUid).set({
-    username: myName
-  });
-
-  db.ref("notifications/" + targetUid).push(
-    myName + " sana arkadaşlık isteği gönderdi ❤️"
-  );
-
-  alert("Arkadaşlık isteği gönderildi");
-}
-
-function acceptFriend(senderUid, senderName) {
-  const myUid = auth.currentUser.uid;
-
-  db.ref("users/" + myUid + "/friends/" + senderUid).set(true);
-  db.ref("users/" + senderUid + "/friends/" + myUid).set(true);
-
-  db.ref("friendRequests/" + myUid + "/" + senderUid).remove();
-
-  db.ref("notifications/" + senderUid).push(
-    auth.currentUser.displayName + " isteğini kabul etti ✅"
-  );
-}
-function rejectFriend(senderUid, senderName) {
-  const myUid = auth.currentUser.uid;
-
-  db.ref("friendRequests/" + myUid + "/" + senderUid).remove();
-
-  db.ref("notifications/" + senderUid).push(
-    auth.currentUser.displayName + " isteğini reddetti ❌"
-  );
-}
-
-// ================= Hesap Sil Fonksiyonu =================
-function deleteAccount() {
-  if (!confirm("Hesabın silinecek. Emin misin?")) return;
-
-  const uid = auth.currentUser.uid;
-
-  // Kullanıcıyı pasif yap
-  db.ref("users/" + uid).update({
-    username: "Silinmiş Kullanıcı",
-    deleted: true
-  });
-
-  // Arkadaş listelerinden kaldır
-  db.ref("users").once("value", snap => {
-    snap.forEach(user => {
-      db.ref("users/" + user.key + "/friends/" + uid).remove();
+  db.ref("channels/" + currentChannel + "/messages")
+    .limitToLast(50)
+    .on("child_added", snapshot => {
+      const msg = snapshot.val();
+      showMessage(msg);
     });
-  });
-
-  // Auth çıkış
-  auth.signOut();
-  alert("Hesap silindi");
 }
 
- // İSTEKLERİ YÜKLE BASİT
+/* ================= MESAJI EKRANA BAS ================= */
+function showMessage(msg) {
+  const messagesDiv = document.getElementById("messages");
 
-firebase.auth().onAuthStateChanged(user => {
-  if (!user) return;
-  const uid = user.uid;
-  const db = firebase.database();
+  const div = document.createElement("div");
+  div.className = "message";
 
-  db.ref("friendRequests/" + uid).on("value", snap => {
-    const box = document.getElementById("requestsList");
-    if (!box) return;
-    box.innerHTML = "";
+  div.innerText = msg.text;
 
-    snap.forEach(req => {
-      const senderUid = req.key;
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
 
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <p>Arkadaş isteği</p>
-        <button onclick="acceptFriend('${senderUid}')">✅</button>
-        <button onclick="rejectFriend('${senderUid}')">❌</button>
-      `;
-      box.appendChild(div);
-    });
-  });
+/* ================= SAYFA AÇILINCA ================= */
+auth.onAuthStateChanged(user => {
+  if (user) {
+    loadMessages();
+  }
 });
