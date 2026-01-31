@@ -1,10 +1,7 @@
-window.sendMessage = function () {
-  let input = document.getElementById("messageInput");
-  if (!input.value) return;
-
-  let msg = document.createElement("div");
-  msg.innerText = "Sen: " + input.value;
-
-  document.getElementById("messages").appendChild(msg);
-  input.value = "";
-}
+window.sendMessage = () => {
+  if (!messageInput.value) return;
+  const div = document.createElement("div");
+  div.innerText = "Sen: " + messageInput.value;
+  messages.appendChild(div);
+  messageInput.value = "";
+};
