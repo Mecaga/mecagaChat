@@ -1,25 +1,43 @@
-function sendMessage(){
-  const input = document.getElementById("messageInput");
-  if(!input.value.trim()) return;
+// ================= MAIN SYSTEM =================
+const db = firebase.database();
+const auth = firebase.auth();
 
-  if(!channels[currentChannel]){
-    channels[currentChannel] = { messages: [], owner: null };
-  }
+let currentChannel = "general";
 
-  channels[currentChannel].messages.push({
-    user: user.name,
-    userId: user.id,
-    text: input.value
-  });
-
-  input.value = "";
-  renderMessages();
+// Kanal değiştirme
+function openGeneralChannel() {
+  currentChannel = "general";
+  document.getElementById("chatTitle").innerText = "Genel Sohbet";
+  loadMessages();
 }
 
-function switchChannel(name){
-  currentChannel = name;
-  document.getElementById("chatTitle").innerText = name;
-  unreadMessages[name] = 0;
-  renderMessages();
-  renderChatPanel();
+// Kanal oluşturma
+function createChannel() {
+  const input = document.getElementById("channelNameInput");
+  const name = input.value.trim();
+  if (!name) return alert("Kanal adı girin!");
+
+  db.ref("channels/" + name).set({
+    createdBy: auth.currentUser.uid,
+    createdAt: Date.now()
+  }).then(() => {
+    alert("Kanal oluşturuldu!");
+    input.value = "";
+    closeModals();
+  });
+}
+
+// Kanal katıl
+function joinChannel() {
+  const input = document.getElementById("joinChannelInput");
+  const channel = input.value.trim();
+  if (!channel) return alert("Kanal adı girin!");
+
+  db.ref("channels/" + channel).once("value", snapshot => {
+    if (!snapshot.exists()) return alert("Kanal bulunamadı!");
+    currentChannel = channel;
+    document.getElementById("chatTitle").innerText = channel;
+    loadMessages();
+    closeModals();
+  });
 }
