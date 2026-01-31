@@ -241,3 +241,18 @@ input {
   }
 
 }
+
+/* ================= MESSAGE INPUT FIX ================= */
+.messageBox {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.messageBox input {
+  flex: 1;
+}
+
+.messageBox button {
+  white-space: nowrap;
+}
