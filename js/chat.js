@@ -86,6 +86,7 @@ function joinChannel() {
   listenMessages();
 }
 
+// ================= ARKADASLIK AYARLARI =================
 function sendFriendRequest(targetUid, targetName) {
   const myUid = auth.currentUser.uid;
   const myName = auth.currentUser.displayName;
