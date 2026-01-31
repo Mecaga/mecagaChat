@@ -1,64 +1,89 @@
-/* ================= PANELLER ================= */
-const panels = ["friendsPanel", "mailPanel", "boxPanel"];
-const modals = ["channelForm", "joinForm", "userMenu"];
+/* ================= UI.JS ================= */
 
+/* ================= PANEL / MODAL AÇMA-KAPAMA ================= */
+const panels = ["friendsPanel", "mailPanel", "boxPanel"];
+const modals = ["channelForm", "joinForm", "userMenu", "deleteConfirm"];
+
+/* Her panel ve modalı gizle */
 function hideAllPanels() {
   panels.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
+    const panel = document.getElementById(id);
+    if (panel) panel.classList.add("hidden");
   });
 }
 
 function hideAllModals() {
   modals.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add("hidden");
   });
 }
 
-function toggleFriends() {
-  const panel = document.getElementById("friendsPanel");
+/* Aç/Kapat işlevleri */
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
   const isOpen = !panel.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
   if (!isOpen) panel.classList.remove("hidden");
 }
 
-function toggleMail() {
-  const panel = document.getElementById("mailPanel");
-  const isOpen = !panel.classList.contains("hidden");
+function openModal(id) {
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.remove("hidden");
 }
 
-function toggleBox() {
-  const panel = document.getElementById("boxPanel");
-  const isOpen = !panel.classList.contains("hidden");
+/* ================= PANEL BUTONLARI ================= */
+function toggleFriends() { togglePanel("friendsPanel"); }
+function toggleMail() { togglePanel("mailPanel"); }
+function toggleBox() { togglePanel("boxPanel"); }
+
+/* ================= MODAL BUTONLARI ================= */
+function showCreateChannel() { openModal("channelForm"); }
+function showJoinChannel() { openModal("joinForm"); }
+function toggleUserMenu() { togglePanel("userMenu"); }
+function closeModals() { hideAllModals(); }
+
+/* ================= GENEL SOHBET ================= */
+function openGeneralChannel() {
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+  const title = document.getElementById("chatTitle");
+  if (title) title.innerText = "Genel Sohbet";
 }
 
-/* ================= MODALLAR ================= */
-function showCreateChannel() {
-  hideAllPanels();
-  hideAllModals();
-  document.getElementById("channelForm").classList.remove("hidden");
+/* ================= HESAP VE KULLANICI ================= */
+function changeUsername() {
+  const newName = prompt("Yeni kullanıcı adınızı girin:");
+  if (!newName) return;
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  firebase.database().ref("users/" + user.uid).update({ username: newName });
+  const myUser = document.getElementById("myUser");
+  if (myUser) myUser.innerText = newName + "#" + user.uid.slice(0,4);
+  closeModals();
 }
 
-function showJoinChannel() {
-  hideAllPanels();
-  hideAllModals();
-  document.getElementById("joinForm").classList.remove("hidden");
+function deleteAccount() {
+  openModal("deleteConfirm");
 }
 
-function toggleUserMenu() {
-  const menu = document.getElementById("userMenu");
-  const isOpen = !menu.classList.contains("hidden");
-  hideAllPanels();
-  hideAllModals();
-  if (!isOpen) menu.classList.remove("hidden");
-}
+function confirmDeleteAccount() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
 
-function closeModals() {
-  hideAllModals();
+  // Kullanıcıyı Firebase auth ve DB’den sil
+  db.ref("users/" + user.uid).remove();
+  user.delete().then(() => {
+    alert("Hesabınız silindi!");
+    location.reload();
+  }).catch(err => {
+    alert("Hesap silinemedi: " + err.message);
+  });
+  closeModals();
 }
