@@ -100,3 +100,25 @@ function sendFriendRequest(targetUid, targetName) {
 
   alert("Arkadaşlık isteği gönderildi");
 }
+
+function acceptFriend(senderUid, senderName) {
+  const myUid = auth.currentUser.uid;
+
+  db.ref("users/" + myUid + "/friends/" + senderUid).set(true);
+  db.ref("users/" + senderUid + "/friends/" + myUid).set(true);
+
+  db.ref("friendRequests/" + myUid + "/" + senderUid).remove();
+
+  db.ref("notifications/" + senderUid).push(
+    auth.currentUser.displayName + " isteğini kabul etti ✅"
+  );
+}
+function rejectFriend(senderUid, senderName) {
+  const myUid = auth.currentUser.uid;
+
+  db.ref("friendRequests/" + myUid + "/" + senderUid).remove();
+
+  db.ref("notifications/" + senderUid).push(
+    auth.currentUser.displayName + " isteğini reddetti ❌"
+  );
+}
