@@ -1,19 +1,74 @@
-window.showCreateChannel = () => { channelForm.classList.remove("hidden"); joinForm.classList.add("hidden"); };
-window.showJoinChannel = () => { joinForm.classList.remove("hidden"); channelForm.classList.add("hidden"); };
-window.createChannel = () => {
-  const name = channelNameInput.value;
-  if(!name) return alert("Kanal adı gerekli!");
-  const uid = auth.currentUser.uid;
-  const id = Math.floor(Math.random()*9000+1000);
-  db.ref("channels/"+name+"#"+id).set({creator: uid, name: name})
-    .then(()=>alert("✅ Kanal oluşturuldu!"));
-};
-window.joinChannel = () => {
-  const fullName = joinChannelInput.value;
-  db.ref("channels/"+fullName).once("value").then(snap=>{
-    if(!snap.exists()) return alert("❌ Kanal bulunamadı!");
-    alert("✅ Kanal katıldınız!");
+// ================= AUTH =================
+function login() {
+  const email = loginEmail.value;
+  const pass = loginPassword.value;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(err => alert(err.message));
+}
+
+function register() {
+  const email = regEmail.value;
+  const pass = regPassword.value;
+  const username = regUsername.value;
+
+  auth.createUserWithEmailAndPassword(email, pass)
+    .then(res => {
+      return res.user.updateProfile({ displayName: username });
+    })
+    .catch(err => alert(err.message));
+}
+
+// ================= MESSAGES =================
+function sendMessage() {
+  const text = messageInput.value;
+  if (!text) return;
+
+  const msg = {
+    user: auth.currentUser.displayName || "kullanici",
+    uid: auth.currentUser.uid,
+    text: text,
+    time: Date.now()
+  };
+
+  db.ref("channels/" + currentChannel).push(msg);
+  messageInput.value = "";
+}
+
+// ================= LISTEN =================
+function listenMessages() {
+  db.ref("channels/" + currentChannel).off();
+
+  db.ref("channels/" + currentChannel).on("child_added", snap => {
+    const m = snap.val();
+    const div = document.createElement("div");
+    div.innerText = `${m.user}: ${m.text}`;
+    document.getElementById("messages").appendChild(div);
   });
-};
-window.openGeneralChannel = () => { alert("Genel Sohbet açıldı!"); };
-window.sendMessage = () => { alert("Mesaj gönderme fonksiyonu henüz eklenmedi!"); };
+}
+
+// Genel sohbet otomatik
+listenMessages();
+
+// ================= CHANNEL =================
+function createChannel() {
+  const name = channelNameInput.value.trim();
+  if (!name) return;
+
+  currentChannel = name;
+  document.getElementById("chatTitle").innerText = name;
+  document.getElementById("messages").innerHTML = "";
+  closeModals();
+  listenMessages();
+}
+
+function joinChannel() {
+  const name = joinChannelInput.value.trim();
+  if (!name) return;
+
+  currentChannel = name;
+  document.getElementById("chatTitle").innerText = name;
+  document.getElementById("messages").innerHTML = "";
+  closeModals();
+  listenMessages();
+}
