@@ -256,3 +256,10 @@ input {
 .messageBox button {
   white-space: nowrap;
 }
+.message {
+  background: #2a2f5a;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
