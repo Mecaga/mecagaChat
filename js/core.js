@@ -54,3 +54,19 @@ function sendFriendRequest() {
     alert("Arkadaş isteği gönderildi");
   });
 }
+
+// ================= ARKADASLIK ISTEGI KABUL/RED İŞLEMLERİ =================
+
+function acceptFriend(senderUid) {
+  const myUid = firebase.auth().currentUser.uid;
+  const db = firebase.database();
+
+  db.ref(`friends/${myUid}/${senderUid}`).set(true);
+  db.ref(`friends/${senderUid}/${myUid}`).set(true);
+  db.ref(`friendRequests/${myUid}/${senderUid}`).remove();
+}
+
+function rejectFriend(senderUid) {
+  const myUid = firebase.auth().currentUser.uid;
+  firebase.database().ref(`friendRequests/${myUid}/${senderUid}`).remove();
+}
