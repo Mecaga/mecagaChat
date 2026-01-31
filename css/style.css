@@ -1,21 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #121212;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------------- TOP BAR ---------------- */
+.topbar {
+  height: 55px;
+  background: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid #333;
+}
+
+#myUser {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Emoji butonlar */
+.topButtons button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* ---------------- USER MENU ---------------- */
+#userMenu {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 8px;
+  width: 180px;
+  z-index: 200;
+}
+
+#userMenu button {
+  width: 100%;
+  margin-bottom: 6px;
+  background: #2a2a2a;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ---------------- MAIN BUTTONS ---------------- */
+.mainButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.mainButtons button {
+  background: #2a2a2a;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ---------------- PANELS ---------------- */
 .panel {
   position: absolute;
   top: 60px;
   right: 10px;
-  width: 280px;
-  height: 70%;
-  background: #1e1e1e;
+  width: 300px;
+  height: calc(100vh - 70px);
+  background: #1c1c1c;
   border-radius: 10px;
   padding: 10px;
-  z-index: 100;
+  z-index: 150;
   overflow-y: auto;
 }
 
-/* Mobil uyum */
+/* Panel başlık */
+.panel h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ---------------- FORMS ---------------- */
+.formBox {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 10px;
+  width: 280px;
+  z-index: 160;
+}
+
+.formBox input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+.formBox button {
+  width: 100%;
+  padding: 8px;
+  background: #3a3a3a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ---------------- CHAT AREA ---------------- */
+.chatArea {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* ---------------- UTILS ---------------- */
+.hidden {
+  display: none;
+}
+
+/* ---------------- MOBILE ---------------- */
 @media (max-width: 768px) {
   .panel {
+    width: 92%;
+    right: 4%;
+  }
+
+  .mainButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mainButtons button {
     width: 90%;
-    right: 5%;
-    height: 65%;
   }
 }
