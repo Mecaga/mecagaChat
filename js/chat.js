@@ -1,11 +1,11 @@
-// Firebase
-const db = firebase.database();
+// ================= FIREBASE =================
 const auth = firebase.auth();
+const db = firebase.database();
 
 // Aktif kanal
 let currentChannel = "general";
 
-/* ================= MESAJ GÖNDER ================= */
+// ================= MESAJ GÖNDER =================
 function sendMessage() {
   const input = document.getElementById("messageInput");
   if (!input) return;
@@ -14,40 +14,46 @@ function sendMessage() {
   if (text === "") return;
 
   const user = auth.currentUser;
-  if (!user) return;
+  if (!user) {
+    console.log("Kullanıcı yok");
+    return;
+  }
 
   const messageData = {
     uid: user.uid,
-    username: user.displayName || "Anonim",
+    username: user.displayName || "Kullanıcı",
     text: text,
     time: Date.now()
   };
 
-  db.ref(`channels/${currentChannel}/messages`).push(messageData);
+  db.ref("channels/" + currentChannel + "/messages").push(messageData);
   input.value = "";
 }
 
-/* ================= MESAJLARI YÜKLE ================= */
+// ================= MESAJLARI YÜKLE =================
 function loadMessages() {
   const messagesDiv = document.getElementById("messages");
   if (!messagesDiv) return;
 
   messagesDiv.innerHTML = "";
 
-  // ÖNCE eski listener'ı kapat
-  db.ref(`channels/${currentChannel}/messages`).off();
-
-  db.ref(`channels/${currentChannel}/messages`)
+  db.ref("channels/" + currentChannel + "/messages")
     .limitToLast(50)
-    .on("child_added", snapshot => {
+    .off(); // eski dinleyicileri kapat
+
+  db.ref("channels/" + currentChannel + "/messages")
+    .limitToLast(50)
+    .on("child_added", (snapshot) => {
       const msg = snapshot.val();
       showMessage(msg);
     });
 }
 
-/* ================= MESAJI GÖSTER ================= */
+// ================= MESAJI EKRANA BAS =================
 function showMessage(msg) {
   const messagesDiv = document.getElementById("messages");
+  if (!messagesDiv) return;
+
   const user = auth.currentUser;
 
   const div = document.createElement("div");
@@ -68,22 +74,25 @@ function showMessage(msg) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-/* ================= AUTH ================= */
-auth.onAuthStateChanged(user => {
-  if (user) {
-    loadMessages();
-  }
-});
-
-/* ================= ENTER İLE GÖNDER ================= */
+// ================= ENTER İLE GÖNDER =================
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("messageInput");
   if (!input) return;
 
-  input.addEventListener("keydown", e => {
+  input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
+});
+
+// ================= LOGIN OLUNCA MESAJLARI YÜKLE =================
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("Giriş yapıldı:", user.uid);
+    loadMessages();
+  } else {
+    console.log("Çıkış yapıldı");
+  }
 });
