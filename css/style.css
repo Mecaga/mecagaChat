@@ -10,9 +10,8 @@ body {
   background: #0f1220;
   color: #fff;
   min-height: 100vh;
-  overflow-y: auto;
+  overflow-x: hidden;
 }
-
 
 /* ================= COMMON ================= */
 .hidden {
@@ -21,9 +20,9 @@ body {
 
 .screen {
   min-height: 100vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
-
 
 button {
   padding: 10px 14px;
@@ -65,10 +64,6 @@ input {
   text-align: center;
 }
 
-.logo {
-  margin-bottom: 10px;
-}
-
 /* ================= TOP BAR ================= */
 .topbar {
   display: flex;
@@ -98,12 +93,11 @@ input {
 
 /* ================= CHAT ================= */
 .content {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
   padding: 10px;
 }
-
 
 #chatTitle {
   text-align: center;
@@ -119,160 +113,15 @@ input {
   overflow-y: auto;
 }
 
-.messageBox {
-  display: flex;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.messageBox input {
-  flex: 1;
-}
-
-/* ================= PANELS ================= */
-.panel {
-  position: fixed;
-  top: 60px;
-  right: 10px;
-  width: 260px;
-  height: 60vh;
-  background: #1b1f3b;
-  border-radius: 10px;
-  padding: 10px;
-  z-index: 20;
-}
-
-/* ================= MODALS ================= */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #1b1f3b;
-  padding: 20px;
-  border-radius: 10px;
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 30;
-}
-
-/* ================= ACCOUNT ACTIONS (GENEL) ================= */
-.account-actions {
-  width: 100%;
-  padding: 12px;
-  display: flex;
-  justify-content: center;
-}
-
-.account-actions .danger {
-  background: #e53935;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-
-/* ================= MOBILE FIX ================= */
-@media (max-width: 768px) {
-
-  body {
-    overflow-x: hidden;
-  }
-
-  /* MAIN BUTTONS */
-  .mainButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 90%;
-    margin: 10px auto;
-  }
-
-  .mainButtons button {
-    width: 100%;
-  }
-
-  /* CHAT AREA */
-  .content {
-    width: 95%;
-    margin: auto;
-  }
-
-  #messages {
-    height: 55vh;
-    overflow-y: auto;
-  }
-
-  .chat-input {
-    display: flex;
-    gap: 5px;
-  }
-
-  #messageInput {
-    flex: 1;
-  }
-
-  /* PANELS */
-  .panel {
-    position: fixed;
-    right: 5%;
-    top: 70px;
-    width: 90%;
-    max-height: 70vh;
-    overflow-y: auto;
-    z-index: 20;
-  }
-
-  /* MODALS */
-  .modal {
-  width: 90%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-
-  /* TOP BAR */
-  .topbar {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-}
-
-/* ================= MESSAGE INPUT FIX ================= */
-.messageBox {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.messageBox input {
-  flex: 1;
-}
-
-.messageBox button {
-  white-space: nowrap;
-}
-.message {
-  background: #2a2f5a;
-  padding: 8px 10px;
-  border-radius: 8px;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-
-/* ================= CHAT INPUT ================= */
+/* ================= MESSAGE INPUT ================= */
+.messageBox,
 .chat-input {
   display: flex;
   gap: 6px;
   margin-top: 8px;
 }
 
+.messageBox input,
 #messageInput {
   flex: 1;
 }
@@ -287,18 +136,15 @@ input {
   word-wrap: break-word;
 }
 
-/* BENİM MESAJIM */
 .message.me {
   background: #5865f2;
   margin-left: auto;
   text-align: right;
 }
 
-/* DİĞERLERİ */
 .message.other {
   background: #2a2f5a;
   margin-right: auto;
-  text-align: left;
 }
 
 .message .user {
@@ -307,6 +153,79 @@ input {
   margin-bottom: 2px;
 }
 
-#userMenu {
+/* ================= OVERLAY ================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
   z-index: 999;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* ================= MODALS (GERÇEK MERKEZ) ================= */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 320px;
+  background: #1b1f3b;
+  padding: 20px;
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+/* ================= ACCOUNT ACTIONS ================= */
+.account-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* ================= PANELS (YAN MENÜLER) ================= */
+.panel {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  width: 260px;
+  max-height: 70vh;
+  background: #1b1f3b;
+  border-radius: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  .mainButtons {
+    flex-direction: column;
+    width: 90%;
+    margin: auto;
+  }
+
+  .content {
+    width: 95%;
+    margin: auto;
+  }
+
+  .panel {
+    width: 90%;
+    right: 5%;
+  }
+
 }
