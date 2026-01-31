@@ -1,79 +1,34 @@
-// Ekran geçişleri
-window.showRegister = () => { loginScreen.classList.add("hidden"); registerScreen.classList.remove("hidden"); };
-window.showLogin = () => { registerScreen.classList.add("hidden"); loginScreen.classList.remove("hidden"); };
+function showRegister(){loginScreen.classList.add('hidden');registerScreen.classList.remove('hidden')}
+function showLogin(){registerScreen.classList.add('hidden');loginScreen.classList.remove('hidden')}
 
-// Giriş
-window.login = function() {
-  const email = loginEmail.value;
-  const password = loginPassword.value;
-
-  auth.signInWithEmailAndPassword(email,password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      loadUserData(user);
-    })
-    .catch(err => alert("❌ Giriş Hatası: " + err.message));
-};
-
-// Kayıt
-window.register = function() {
-  const username = regUsername.value;
-  const email = regEmail.value;
-  const password = regPassword.value;
-
-  auth.createUserWithEmailAndPassword(email,password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      db.ref("users/"+user.uid).set({
-        username: username,
-        email: email,
-        platform: detectPlatform()
-      });
-      enterApp(username,user.uid);
-    })
-    .catch(err => alert("❌ Kayıt Hatası: "+err.message));
-};
-
-// Kullanıcı verilerini yükle
-function loadUserData(user){
-  db.ref("users/"+user.uid+"/username").once("value").then(snap=>{
-    const name = snap.val() || "user";
-    enterApp(name,user.uid);
-  });
+function login(){
+  mainScreen.classList.remove('hidden');
+  loginScreen.classList.add('hidden');
 }
 
-// Platform algılama
-function detectPlatform(){
-  const ua = navigator.userAgent;
-  if(/android/i.test(ua)) return "Android";
-  if(/iPad|Tablet/i.test(ua)) return "Tablet";
-  return "PC";
+function register(){
+  mainScreen.classList.remove('hidden');
+  registerScreen.classList.add('hidden');
 }
 
-// Ana ekrana geçiş
-function enterApp(username,uid){
-  loginScreen.classList.add("hidden");
-  registerScreen.classList.add("hidden");
-  mainScreen.classList.remove("hidden");
-  myUser.innerText = username+"#"+uid.slice(0,4);
-
-  // ekran boyutu ayarı
-  if(detectPlatform()==="Android" || detectPlatform()==="Tablet"){
-    mainScreen.style.fontSize="14px";
-  } else {
-    mainScreen.style.fontSize="16px";
-  }
+function closePopup(){
+  popupOverlay.classList.add('hidden');
+  createChannelPopup.classList.add('hidden');
+  joinChannelPopup.classList.add('hidden');
 }
-const appUI = document.getElementById("appUI");
-const authUI = document.getElementById("authScreen");
 
-auth.onAuthStateChanged(user => {
-  if (user) {
-    authUI.classList.add("hidden");
-    appUI.classList.remove("hidden");
-    closeAllPanels();
-  } else {
-    authUI.classList.remove("hidden");
-    appUI.classList.add("hidden");
-  }
-});
+function showCreateChannel(){
+  closePopup();
+  popupOverlay.classList.remove('hidden');
+  createChannelPopup.classList.remove('hidden');
+}
+
+function showJoinChannel(){
+  closePopup();
+  popupOverlay.classList.remove('hidden');
+  joinChannelPopup.classList.remove('hidden');
+}
+
+function openGeneralChannel(){
+  chatTitle.innerText='Genel Sohbet';
+}
