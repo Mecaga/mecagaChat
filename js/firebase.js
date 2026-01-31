@@ -1,3 +1,4 @@
+// ================= FIREBASE INIT =================
 const firebaseConfig = {
   apiKey: "AIzaSyC46gx7XPMN607cZR0xPoryIXlWf7D3nuI",
   authDomain: "mecagachat-ec3a7.firebaseapp.com",
@@ -10,5 +11,17 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-window.auth = firebase.auth();
-window.db = firebase.database();
+const auth = firebase.auth();
+const db = firebase.database();
+
+// ================= AUTH STATE =================
+auth.onAuthStateChanged(user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById("myUser").innerText =
+      (user.displayName || "kullanici") + "#" + user.uid.slice(0, 4);
+    showMain();
+  } else {
+    showLogin();
+  }
+});
