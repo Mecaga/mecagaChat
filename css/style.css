@@ -166,6 +166,24 @@ input {
     right: 5%;
   }
 
+  /* ALTTAKİ HESAP SİL BUTONU GÖRÜNSÜN */
+.account-actions {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.account-actions .danger {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+
   .content {
     height: calc(100vh - 160px);
   }
