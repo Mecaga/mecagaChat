@@ -106,3 +106,49 @@ window.deleteAccount = function(){
     alert("❌ Hata: "+err.message);
   });
 };
+// Kullanıcı adı üzerine basınca menü aç
+window.toggleUserMenu = () => {
+  userMenu.classList.toggle("hidden");
+};
+
+// Kullanıcı adı değiştir
+window.changeUsername = () => {
+  if(!auth.currentUser) return alert("❌ Giriş yapmalısınız!");
+  const newName = prompt("Yeni kullanıcı adı:");
+  if(!newName) return;
+
+  const uid = auth.currentUser.uid;
+  db.ref("users/"+uid).update({username:newName})
+    .then(() => myUser.innerText=newName+"#"+uid.slice(0,4))
+    .catch(err=>alert("❌ Hata: "+err.message));
+};
+
+// Hesap silme
+window.deleteAccount = () => {
+  if(!auth.currentUser) return;
+  const confirmDel = confirm("❌ Hesabınızı silmek istediğinize emin misiniz?");
+  if(!confirmDel) return;
+
+  const uid = auth.currentUser.uid;
+
+  // 1️⃣ Mesajlar ve arkadaş listesi
+  db.ref("users/"+uid).remove();
+  db.ref("friends/"+uid).remove();
+  db.ref("friendRequests/"+uid).remove();
+  db.ref("chats/").once("value").then(chats=>{
+    chats.forEach(chatSnap=>{
+      const chatId = chatSnap.key;
+      chatSnap.forEach(msgSnap=>{
+        if(msgSnap.val().sender===uid){
+          msgSnap.ref.update({sender:"deleteuser#0000"});
+        }
+      });
+    });
+  });
+
+  // 2️⃣ Auth hesabını sil
+  auth.currentUser.delete().then(()=>{
+    alert("✅ Hesabınız silindi!");
+    location.reload();
+  }).catch(err=>alert("❌ Hata: "+err.message));
+};
