@@ -61,3 +61,26 @@
 
 </body>
 </html>
+<div class="topbar">
+  <div id="myUser" onclick="toggleUserMenu()">kullanici#0000</div>
+  <div id="userMenu" class="hidden">
+    <button onclick="changeUsername()">Kullanıcı Adını Değiştir</button>
+    <button onclick="deleteAccount()">Hesabı Sil</button>
+  </div>
+</div>
+
+<div class="mainButtons">
+  <button onclick="showCreateChannel()">Kanal Oluştur</button>
+  <button onclick="showJoinChannel()">Kanal Katıl</button>
+  <button onclick="openGeneralChannel()">Genel Sohbet</button>
+</div>
+
+<div id="channelForm" class="hidden">
+  <input id="channelNameInput" placeholder="Kanal Adı">
+  <button onclick="createChannel()">Oluştur</button>
+</div>
+
+<div id="joinForm" class="hidden">
+  <input id="joinChannelInput" placeholder="KanalAdı#ID">
+  <button onclick="joinChannel()">Katıl</button>
+</div>
