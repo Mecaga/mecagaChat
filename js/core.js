@@ -64,3 +64,16 @@ function enterApp(username,uid){
     mainScreen.style.fontSize="16px";
   }
 }
+const appUI = document.getElementById("appUI");
+const authUI = document.getElementById("authScreen");
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    authUI.classList.add("hidden");
+    appUI.classList.remove("hidden");
+    closeAllPanels();
+  } else {
+    authUI.classList.remove("hidden");
+    appUI.classList.add("hidden");
+  }
+});
