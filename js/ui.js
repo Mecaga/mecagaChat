@@ -1,45 +1,46 @@
-/* ================= GENEL ================= */
 const panels = ["friendsPanel", "mailPanel", "boxPanel"];
 const modals = ["channelForm", "joinForm", "userMenu", "deleteConfirm"];
 
 function hideAllPanels() {
   panels.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
   });
 }
 
 function hideAllModals() {
   modals.forEach(id => {
-    document.getElementById(id).classList.add("hidden");
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
   });
 }
 
-/* ================= PANELLER ================= */
+/* ===== PANELS ===== */
 function toggleFriends() {
   const panel = document.getElementById("friendsPanel");
-  const isOpen = !panel.classList.contains("hidden");
+  const open = !panel.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+  if (!open) panel.classList.remove("hidden");
 }
 
 function toggleMail() {
   const panel = document.getElementById("mailPanel");
-  const isOpen = !panel.classList.contains("hidden");
+  const open = !panel.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+  if (!open) panel.classList.remove("hidden");
 }
 
 function toggleBox() {
   const panel = document.getElementById("boxPanel");
-  const isOpen = !panel.classList.contains("hidden");
+  const open = !panel.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+  if (!open) panel.classList.remove("hidden");
 }
 
-/* ================= MODALLAR ================= */
+/* ===== MODALS ===== */
 function showCreateChannel() {
   hideAllPanels();
   hideAllModals();
@@ -54,17 +55,17 @@ function showJoinChannel() {
 
 function toggleUserMenu() {
   const menu = document.getElementById("userMenu");
-  const isOpen = !menu.classList.contains("hidden");
+  const open = !menu.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) menu.classList.remove("hidden");
+  if (!open) menu.classList.remove("hidden");
 }
 
 function closeModals() {
   hideAllModals();
 }
 
-/* ================= GENEL SOHBET ================= */
+/* ===== CHAT ===== */
 function openGeneralChannel() {
   hideAllPanels();
   hideAllModals();
