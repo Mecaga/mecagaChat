@@ -1,84 +1,58 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>mecagaChat</title>
-
-<link rel="stylesheet" href="css/style.css">
-
-<script>
-  // Cihaz algılama
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  document.documentElement.classList.add(isMobile ? "mobile" : "desktop");
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MecagaChat</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<div id="app">
+<!-- GİRİŞ / KAYIT -->
+<div id="authScreen" class="screen">
+  <h1>MecagaChat</h1>
 
-  <!-- ÜST BAR -->
-  <header class="top-bar">
-    <span id="profile" onclick="openProfile()">Misafir#0000</span>
-    <div class="top-actions">
-      <button onclick="toggleFriendsPanel()">👥</button>
-      <button onclick="toggleChatPanel()">💬</button>
-      <button onclick="openMail()">📬</button>
-    </div>
-  </header>
+  <input id="username" placeholder="Kullanıcı adı">
+  <input id="password" type="password" placeholder="Şifre">
 
-  <!-- PROFİL PANEL -->
-  <div id="profilePanel" class="panel" style="display:none">
-    <input id="changeName" placeholder="Yeni isim">
-    <button onclick="saveName()">Kaydet</button>
-  </div>
-
-  <!-- MAIL PANEL -->
-  <div id="mailPanel" class="panel" style="display:none">
-    <h3>Bildirimler</h3>
-    <div id="mailContent">Henüz yok</div>
-  </div>
-
-  <!-- ANA ALAN -->
-  <div class="main">
-
-    <!-- ARKADAŞLAR -->
-    <aside id="friendsPanel" class="side-panel" style="display:none">
-      <h3>Arkadaşlar</h3>
-      <ul id="friendsList"></ul>
-      <button onclick="addFriend()">+ Arkadaş Ekle</button>
-    </aside>
-
-    <!-- CHAT -->
-    <section class="chat-area">
-      <h3 id="chatTitle">Genel#0000</h3>
-      <div id="messages"></div>
-
-      <div class="send-box">
-        <input id="messageText" placeholder="Mesaj yaz...">
-        <button onclick="sendMessage()">➤</button>
-      </div>
-    </section>
-
-    <!-- SOHBET LİSTESİ -->
-    <aside id="chatPanel" class="side-panel" style="display:none">
-      <h3>Kanallar</h3>
-      <ul id="channelList"></ul>
-
-      <h3>Sohbetler</h3>
-      <ul id="activeChats"></ul>
-
-      <button onclick="createChannel()">+ Kanal</button>
-      <button onclick="joinChannel()">↪ Katıl</button>
-    </aside>
-
-  </div>
+  <button onclick="login()">Giriş Yap</button>
+  <button onclick="register()">Kayıt Ol</button>
 </div>
 
-<script src="js/data.js"></script>
+<!-- ANA EKRAN -->
+<div id="mainScreen" class="screen hidden">
+
+  <!-- ÜST BAR -->
+  <div class="topbar">
+    <div id="myUser" onclick="changeUsername()">kullanici#0001</div>
+
+    <div class="top-buttons">
+      <button onclick="toggleBox()">📦</button>
+      <button onclick="toggleMail()">📧</button>
+      <button onclick="toggleFriends()">❤️</button>
+    </div>
+  </div>
+
+  <!-- ORTA -->
+  <div class="content">
+    <div id="chatTitle">Genel Sohbet</div>
+    <div id="messages"></div>
+
+    <input id="messageInput" placeholder="Mesaj yaz...">
+    <button onclick="sendMessage()">Gönder</button>
+  </div>
+
+  <!-- PANELLER -->
+  <div id="friendsPanel" class="panel hidden">❤️ Arkadaşlar</div>
+  <div id="mailPanel" class="panel hidden">📧 Bildirimler</div>
+  <div id="boxPanel" class="panel hidden">📦 Kanallar</div>
+
+</div>
+
+<script src="js/core.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/main.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/storage.js"></script>
 
 </body>
 </html>
