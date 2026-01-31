@@ -1,21 +1,10 @@
-let currentUser = null;
+function sendMessage() {
+  let input = document.getElementById("messageInput");
+  if (!input.value) return;
 
-// Mesaj gönder
-function sendMessage(text){
-  if(!currentUser || !text) return;
+  let msg = document.createElement("div");
+  msg.innerText = "Sen: " + input.value;
 
-  db.ref("messages").push({
-    fromUid: currentUser.uid,
-    fromName: document.getElementById("userName").innerText,
-    text: text,
-    timestamp: Date.now()
-  });
+  document.getElementById("messages").appendChild(msg);
+  input.value = "";
 }
-
-// Mesajları dinle
-db.ref("messages").on("child_added", snapshot => {
-  const msg = snapshot.val();
-  const li = document.createElement("li");
-  li.textContent = `${msg.fromName}: ${msg.text}`;
-  document.getElementById("messagesList").appendChild(li);
-});
