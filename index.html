@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MecagaChat</title>
-
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<!-- ========== GİRİŞ EKRANI ========== -->
+<!-- LOGIN -->
 <div id="loginScreen" class="screen auth-box fade-in">
   <h1 class="logo glow">💬 MecagaChat</h1>
   <p class="welcome">Tekrar hoş geldin 👋</p>
@@ -21,7 +20,7 @@
   <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
 </div>
 
-<!-- ========== KAYIT EKRANI ========== -->
+<!-- REGISTER -->
 <div id="registerScreen" class="screen auth-box fade-in hidden">
   <h1 class="logo glow">✨ MecagaChat</h1>
   <p class="welcome">MecagaChat’e hoş geldiniz 🎉</p>
@@ -34,13 +33,10 @@
   <button class="secondary" onclick="showLogin()">Geri Dön</button>
 </div>
 
-<!-- ========== ANA EKRAN ========== -->
+<!-- MAIN -->
 <div id="mainScreen" class="screen hidden">
-
-  <!-- ÜST BAR -->
   <div class="topbar">
-    <div id="myUser" onclick="changeUsername()">kullanici#0000</div>
-
+    <div id="myUser">kullanici#0000</div>
     <div class="top-buttons">
       <button onclick="toggleBox()">📦</button>
       <button onclick="toggleMail()">📧</button>
@@ -48,34 +44,27 @@
     </div>
   </div>
 
-  <!-- SOHBET -->
   <div class="content">
     <div id="chatTitle">Genel Sohbet</div>
-
     <div id="messages"></div>
-
     <input id="messageInput" placeholder="Mesaj yaz...">
     <button onclick="sendMessage()">Gönder</button>
   </div>
 
-  <!-- PANELLER -->
   <div id="friendsPanel" class="panel hidden">❤️ Arkadaşlar</div>
   <div id="mailPanel" class="panel hidden">📧 Bildirimler</div>
   <div id="boxPanel" class="panel hidden">📦 Kanallar</div>
-
 </div>
 
-<!-- ========== FIREBASE CDN ========== -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<!-- ========== JS DOSYALARI (SIRA ÖNEMLİ) ========== -->
 <script src="./js/firebase.js"></script>
 <script src="./js/core.js"></script>
 <script src="./js/ui.js"></script>
 <script src="./js/chat.js"></script>
-<script src="./js/storage.js"></script>
 
 </body>
 </html>
