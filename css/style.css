@@ -1,134 +1,21 @@
-body {
-  margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #020617, #0f172a);
-  color: white;
-}
-
-.screen {
-  padding: 20px;
-}
-
-.hidden {
-  display: none;
-}
-
-/* AUTH */
-.auth-box {
-  max-width: 360px;
-  margin: 80px auto;
-  background: #020617;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-  text-align: center;
-}
-
-.logo {
-  margin: 0;
-  font-size: 34px;
-}
-
-.welcome {
-  opacity: 0.85;
-  margin-bottom: 20px;
-}
-
-input {
-  width: 92%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 10px;
-  border: none;
-}
-
-input:focus {
-  outline: none;
-  box-shadow: 0 0 10px #2563eb;
-}
-
-button {
-  width: 95%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #1d4ed8;
-}
-
-.secondary {
-  background: transparent;
-  border: 1px solid #38bdf8;
-}
-
-.secondary:hover {
-  background: #38bdf8;
-  color: black;
-}
-
-/* ANİMASYON */
-.fade-in {
-  animation: fadeIn 0.8s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.glow {
-  text-shadow: 0 0 8px #38bdf8, 0 0 18px #2563eb;
-}
-
-/* MAIN */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  background: #020617;
-  padding: 10px;
-}
-
-#myUser {
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.top-buttons button {
-  font-size: 18px;
-  background: transparent;
-}
-
-.content {
-  padding: 10px;
-}
-
-#messages {
-  height: 300px;
-  overflow-y: auto;
-  background: #020617;
-  margin: 10px 0;
-  padding: 10px;
-}
-
 .panel {
-  position: fixed;
-  right: 0;
-  top: 50px;
-  width: 260px;
-  height: 100%;
-  background: #020617;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 280px;
+  height: 70%;
+  background: #1e1e1e;
+  border-radius: 10px;
   padding: 10px;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+/* Mobil uyum */
+@media (max-width: 768px) {
+  .panel {
+    width: 90%;
+    right: 5%;
+    height: 65%;
+  }
 }
