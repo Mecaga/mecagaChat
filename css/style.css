@@ -1,34 +1,172 @@
-*{box-sizing:border-box;font-family:Arial}
-body{margin:0;background:#121212;color:#fff;height:100vh;overflow:hidden}
-.hidden{display:none}
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-/* Screens */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.auth-box input, .auth-box button{width:260px;margin:6px;padding:8px;border-radius:6px;border:none}
-.auth-box button{background:#2a2a2a;color:#fff}
-.secondary{background:#444}
+body {
+  background: #0f1220;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
 
-/* Topbar */
-.topbar{height:55px;background:#1f1f1f;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.top-buttons button{background:none;border:none;font-size:20px;margin-left:8px;cursor:pointer}
+/* ================= COMMON ================= */
+.hidden {
+  display: none !important;
+}
 
-/* Main buttons */
-.mainButtons{position:absolute;top:65px;left:50%;transform:translateX(-50%);display:flex;gap:12px}
-.mainButtons button{background:#2a2a2a;color:#fff;border:none;padding:10px 16px;border-radius:6px}
+.screen {
+  width: 100%;
+  height: 100vh;
+}
 
-/* Panels */
-.panel{position:absolute;top:60px;right:10px;width:300px;height:calc(100vh - 70px);background:#1c1c1c;border-radius:10px;padding:10px}
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #5865f2;
+  color: #fff;
+  font-size: 14px;
+}
 
-/* Chat */
-.content{position:absolute;top:120px;left:0;right:0;bottom:0;padding:10px}
+button.secondary {
+  background: #444;
+}
 
-/* Popups */
-#popupOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300}
-.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1e1e1e;padding:20px;border-radius:12px;width:300px;z-index:301}
-.popup input,.popup button{width:100%;padding:8px;margin-top:6px;border-radius:6px;border:none}
-.closeBtn{background:#a33;color:#fff}
+button.danger {
+  background: #d9534f;
+}
 
-@media(max-width:768px){
-  .panel{width:92%;right:4%}
-  .mainButtons{flex-wrap:wrap;justify-content:center;width:100%}
+input {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+/* ================= AUTH ================= */
+.auth-box {
+  max-width: 360px;
+  margin: auto;
+  margin-top: 12vh;
+  padding: 20px;
+  background: #1b1f3b;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 10px;
+}
+
+/* ================= TOP BAR ================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #1b1f3b;
+}
+
+#myUser {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.top-buttons button {
+  margin-left: 6px;
+}
+
+/* ================= MAIN BUTTONS ================= */
+.mainButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background: #14162a;
+}
+
+/* ================= CHAT ================= */
+.content {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 110px);
+  padding: 10px;
+}
+
+#chatTitle {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#messages {
+  flex: 1;
+  background: #101322;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.messageBox {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.messageBox input {
+  flex: 1;
+}
+
+/* ================= PANELS ================= */
+.panel {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  width: 260px;
+  height: 60vh;
+  background: #1b1f3b;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 20;
+}
+
+/* ================= MODALS ================= */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1b1f3b;
+  padding: 20px;
+  border-radius: 10px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 30;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .mainButtons {
+    flex-direction: column;
+  }
+
+  .panel {
+    width: 90%;
+    right: 5%;
+  }
+
+  .content {
+    height: calc(100vh - 160px);
+  }
 }
