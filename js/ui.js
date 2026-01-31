@@ -70,3 +70,11 @@ function openGeneralChannel() {
   hideAllModals();
   document.getElementById("chatTitle").innerText = "Genel Sohbet";
 }
+
+
+function hideAllPanels() {
+  document.getElementById("friendsPanel").classList.add("hidden");
+  document.getElementById("mailPanel").classList.add("hidden");
+  document.getElementById("boxPanel").classList.add("hidden");
+  document.getElementById("userMenu").classList.add("hidden");
+}
