@@ -12,6 +12,7 @@ function toggleFriends() {
 
 function toggleMail() {
   closePanels();
+  loadNotifications();
   document.getElementById("mailPanel").classList.toggle("hidden");
 }
 
@@ -47,4 +48,18 @@ function openGeneralChannel() {
   currentChannel = "general";
   document.getElementById("chatTitle").innerText = "Genel Sohbet";
   document.getElementById("messages").innerHTML = "";
+}
+
+
+// ================= Bildirim Panelini Doldurma =================
+function loadNotifications() {
+  const uid = auth.currentUser.uid;
+  const panel = document.getElementById("mailPanel");
+  panel.innerHTML = "<h3>📧 Bildirimler</h3>";
+
+  db.ref("notifications/" + uid).on("child_added", snap => {
+    const div = document.createElement("div");
+    div.innerText = snap.val();
+    panel.appendChild(div);
+  });
 }
