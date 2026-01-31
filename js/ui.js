@@ -1,12 +1,12 @@
-function toggleFriends() {
+window.toggleFriends = function () {
   togglePanel("friendsPanel");
 }
 
-function toggleMail() {
+window.toggleMail = function () {
   togglePanel("mailPanel");
 }
 
-function toggleBox() {
+window.toggleBox = function () {
   togglePanel("boxPanel");
 }
 
@@ -14,8 +14,8 @@ function togglePanel(id) {
   document.getElementById(id).classList.toggle("hidden");
 }
 
-function changeUsername() {
-  let newName = prompt("Yeni kullanıcı adı:");
+window.changeUsername = function () {
+  const newName = prompt("Yeni kullanıcı adı:");
   if (newName) {
     document.getElementById("myUser").innerText = newName + "#0001";
   }
