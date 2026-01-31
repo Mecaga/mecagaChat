@@ -4,34 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MecagaChat</title>
+
+<!-- CSS -->
 <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen" class="screen auth-box fade-in">
-  <h1 class="logo glow">💬 MecagaChat</h1>
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen" class="screen auth-box">
+  <h1 class="logo">💬 MecagaChat</h1>
+
   <input id="loginEmail" type="email" placeholder="Gmail">
   <input id="loginPassword" type="password" placeholder="Şifre">
+
   <button onclick="login()">Giriş Yap</button>
   <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
 </div>
 
-<!-- REGISTER -->
-<div id="registerScreen" class="screen auth-box fade-in hidden">
-  <h1 class="logo glow">✨ MecagaChat</h1>
+<!-- ================= REGISTER ================= -->
+<div id="registerScreen" class="screen auth-box hidden">
+  <h1 class="logo">✨ MecagaChat</h1>
+
   <input id="regUsername" placeholder="Kullanıcı adı">
   <input id="regEmail" type="email" placeholder="Gmail">
   <input id="regPassword" type="password" placeholder="Şifre">
+
   <button onclick="register()">Kayıt Ol</button>
   <button class="secondary" onclick="showLogin()">Geri Dön</button>
 </div>
 
-<!-- MAIN SCREEN -->
+<!-- ================= MAIN ================= -->
 <div id="mainScreen" class="screen hidden">
 
+  <!-- TOP BAR -->
   <div class="topbar">
-    <div id="myUser">kullanici#0000</div>
+    <div id="myUser" onclick="toggleUserMenu()">kullanici#0000</div>
+
     <div class="top-buttons">
       <button onclick="toggleBox()">📦</button>
       <button onclick="toggleMail()">📧</button>
@@ -39,48 +47,59 @@
     </div>
   </div>
 
+  <!-- MAIN BUTTONS -->
   <div class="mainButtons">
     <button onclick="showCreateChannel()">Kanal Oluştur</button>
     <button onclick="showJoinChannel()">Kanal Katıl</button>
     <button onclick="openGeneralChannel()">Genel Sohbet</button>
   </div>
 
+  <!-- CHAT AREA -->
   <div class="content">
     <div id="chatTitle">Genel Sohbet</div>
+
     <div id="messages"></div>
-    <input id="messageInput" placeholder="Mesaj yaz...">
-    <button onclick="sendMessage()">Gönder</button>
+
+    <div class="messageBox">
+      <input id="messageInput" placeholder="Mesaj yaz...">
+      <button onclick="sendMessage()">Gönder</button>
+    </div>
   </div>
 
-  <div id="friendsPanel" class="panel hidden">❤️ Arkadaşlar</div>
-  <div id="mailPanel" class="panel hidden">📧 Bildirimler</div>
-  <div id="boxPanel" class="panel hidden">📦 Kanallar</div>
+  <!-- PANELS -->
+  <div id="friendsPanel" class="panel hidden"></div>
+  <div id="mailPanel" class="panel hidden"></div>
+  <div id="boxPanel" class="panel hidden"></div>
 
-  <!-- POPUPS -->
-  <div id="popupOverlay" class="hidden"></div>
-
-  <div id="createChannelPopup" class="popup hidden">
+  <!-- MODALS -->
+  <div id="channelForm" class="modal hidden">
     <h3>Kanal Oluştur</h3>
-    <input id="channelNameInput" placeholder="Kanal adı">
+    <input id="channelNameInput" placeholder="Kanal Adı">
     <button onclick="createChannel()">Oluştur</button>
-    <button class="closeBtn" onclick="closePopup()">❌</button>
+    <button onclick="closeModals()">İptal</button>
   </div>
 
-  <div id="joinChannelPopup" class="popup hidden">
+  <div id="joinForm" class="modal hidden">
     <h3>Kanal Katıl</h3>
-    <input id="joinChannelInput" placeholder="kanaladı#1234">
+    <input id="joinChannelInput" placeholder="KanalAdı#ID">
     <button onclick="joinChannel()">Katıl</button>
-    <button class="closeBtn" onclick="closePopup()">❌</button>
+    <button onclick="closeModals()">İptal</button>
+  </div>
+
+  <div id="userMenu" class="modal hidden">
+    <button onclick="changeUsername()">Kullanıcı Adı Değiştir</button>
+    <button class="danger" onclick="deleteAccount()">Hesabı Sil</button>
+    <button onclick="closeModals()">Kapat</button>
   </div>
 
 </div>
 
-<!-- Firebase CDN -->
+<!-- ================= FIREBASE ================= -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<!-- JS -->
+<!-- ================= JS ================= -->
 <script src="./js/firebase.js"></script>
 <script src="./js/core.js"></script>
 <script src="./js/ui.js"></script>
