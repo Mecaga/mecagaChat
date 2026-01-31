@@ -176,20 +176,68 @@ input {
 }
 
 
-/* ================= RESPONSIVE (SADECE MOBİL) ================= */
+/* ================= MOBILE FIX ================= */
 @media (max-width: 768px) {
 
-  .mainButtons {
-    flex-direction: column;
+  body {
+    overflow-x: hidden;
   }
 
-  .panel {
+  /* MAIN BUTTONS */
+  .mainButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 90%;
+    margin: 10px auto;
+  }
+
+  .mainButtons button {
+    width: 100%;
+  }
+
+  /* CHAT AREA */
+  .content {
+    width: 95%;
+    margin: auto;
+  }
+
+  #messages {
+    height: 55vh;
+    overflow-y: auto;
+  }
+
+  .chat-input {
+    display: flex;
+    gap: 5px;
+  }
+
+  #messageInput {
+    flex: 1;
+  }
+
+  /* PANELS */
+  .panel {
+    position: fixed;
+    right: 5%;
+    top: 70px;
+    width: 90%;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 20;
+  }
+
+  /* MODALS */
+  .modal {
+    width: 90%;
+    left: 5%;
     right: 5%;
   }
 
-  .content {
-    height: calc(100vh - 160px);
+  /* TOP BAR */
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
 }
