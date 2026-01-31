@@ -1,66 +1,108 @@
+// Ekranlar arası geçiş
+window.showRegister = () => { loginScreen.classList.add("hidden"); registerScreen.classList.remove("hidden"); };
+window.showLogin = () => { registerScreen.classList.add("hidden"); loginScreen.classList.remove("hidden"); };
+
+// Giriş
 window.login = function() {
   const email = loginEmail.value;
   const password = loginPassword.value;
 
-  auth.signInWithEmailAndPassword(email, password)
+  auth.signInWithEmailAndPassword(email,password)
     .then(userCredential => {
       const user = userCredential.user;
-
-      // Kullanıcı adı database'den alınacak
-      db.ref("users/" + user.uid + "/username").once("value", snap => {
-        const name = snap.val() || email.split("@")[0];
-        myUser.innerText = name + "#" + user.uid.slice(0,4);
-        enterApp();
-      });
+      loadUserData(user);
     })
     .catch(err => alert("❌ Giriş Hatası: " + err.message));
 };
 
+// Kayıt
 window.register = function() {
   const username = regUsername.value;
   const email = regEmail.value;
   const password = regPassword.value;
 
-  auth.createUserWithEmailAndPassword(email, password)
+  auth.createUserWithEmailAndPassword(email,password)
     .then(userCredential => {
       const user = userCredential.user;
-
-      db.ref("users/" + user.uid).set({
+      db.ref("users/"+user.uid).set({
         username: username,
-        email: email
+        email: email,
+        platform: detectPlatform()
       });
-
-      myUser.innerText = username + "#" + user.uid.slice(0,4);
-      enterApp();
+      enterApp(username,user.uid);
     })
-    .catch(err => alert("❌ Kayıt Hatası: " + err.message));
+    .catch(err => alert("❌ Kayıt Hatası: "+err.message));
 };
 
-window.showRegister = () => {
-  loginScreen.classList.add("hidden");
-  registerScreen.classList.remove("hidden");
-};
+// Kullanıcı verilerini yükle
+function loadUserData(user){
+  db.ref("users/"+user.uid+"/username").once("value").then(snap=>{
+    const name = snap.val() || "user";
+    enterApp(name,user.uid);
+  });
+}
 
-window.showLogin = () => {
-  registerScreen.classList.add("hidden");
-  loginScreen.classList.remove("hidden");
-};
+// Platform algılama
+function detectPlatform(){
+  const ua = navigator.userAgent;
+  if(/android/i.test(ua)) return "Android";
+  else return "PC";
+}
 
-function enterApp() {
+// Ana ekrana geçiş
+function enterApp(username,uid){
   loginScreen.classList.add("hidden");
   registerScreen.classList.add("hidden");
   mainScreen.classList.remove("hidden");
+  myUser.innerText = username+"#"+uid.slice(0,4);
+
+  // ekran boyutunu platforma göre ayarla
+  if(detectPlatform()==="Android"){
+    mainScreen.style.fontSize="14px";
+  } else {
+    mainScreen.style.fontSize="16px";
+  }
 }
 
 // Kullanıcı adı değiştirme
-window.changeUsername = function() {
-  if (!auth.currentUser) return alert("❌ Giriş yapmalısınız!");
+window.changeUsername = function(){
+  if(!auth.currentUser) return alert("❌ Giriş yapmalısınız!");
   const newName = prompt("Yeni kullanıcı adı:");
-  if (!newName) return;
+  if(!newName) return;
+  const uid = auth.currentUser.uid;
+  db.ref("users/"+uid).update({username:newName})
+    .then(()=> myUser.innerText=newName+"#"+uid.slice(0,4))
+    .catch(err=>alert("❌ Hata: "+err.message));
+};
+
+// Hesap silme
+window.deleteAccount = function(){
+  if(!auth.currentUser) return;
+  const confirmDel = confirm("❌ Hesabınızı silmek istediğinize emin misiniz?");
+  if(!confirmDel) return;
 
   const uid = auth.currentUser.uid;
 
-  db.ref("users/" + uid).update({ username: newName })
-    .then(() => myUser.innerText = newName + "#" + uid.slice(0,4))
-    .catch(err => alert("❌ Hata: " + err.message));
+  // 1️⃣ Mesaj, arkadaşlık ve diğer verileri sil
+  db.ref("users/"+uid).remove();
+  db.ref("friends/"+uid).remove();
+  db.ref("friendRequests/"+uid).remove();
+  db.ref("chats/").once("value").then(chats=>{
+    chats.forEach(chatSnap=>{
+      const chatId = chatSnap.key;
+      chatSnap.forEach(msgSnap=>{
+        if(msgSnap.val().sender===uid){
+          msgSnap.ref.update({sender:"deleteuser#0000"});
+        }
+      });
+    });
+  });
+
+  // 2️⃣ Firebase Auth hesabını sil
+  auth.currentUser.delete().then(()=>{
+    alert("✅ Hesabınız silindi!");
+    location.reload();
+  }).catch(err=>{
+    alert("❌ Hata: "+err.message);
+  });
 };
