@@ -1,10 +1,8 @@
-/* ================= UI.JS ================= */
-
-/* ================= PANEL / MODAL AÇMA-KAPAMA ================= */
+// ================= PANELS & MODALS =================
 const panels = ["friendsPanel", "mailPanel", "boxPanel"];
 const modals = ["channelForm", "joinForm", "userMenu", "deleteConfirm"];
 
-/* Her panel ve modalı gizle */
+// Tüm panelleri gizle
 function hideAllPanels() {
   panels.forEach(id => {
     const panel = document.getElementById(id);
@@ -12,6 +10,7 @@ function hideAllPanels() {
   });
 }
 
+// Tüm modalları gizle
 function hideAllModals() {
   modals.forEach(id => {
     const modal = document.getElementById(id);
@@ -19,9 +18,9 @@ function hideAllModals() {
   });
 }
 
-/* Aç/Kapat işlevleri */
-function togglePanel(id) {
-  const panel = document.getElementById(id);
+// Panel aç/kapa
+function togglePanel(panelId) {
+  const panel = document.getElementById(panelId);
   if (!panel) return;
   const isOpen = !panel.classList.contains("hidden");
   hideAllPanels();
@@ -29,33 +28,62 @@ function togglePanel(id) {
   if (!isOpen) panel.classList.remove("hidden");
 }
 
-function openModal(id) {
+// Kullanıcı menüsü aç/kapa
+function toggleUserMenu() {
+  const menu = document.getElementById("userMenu");
+  if (!menu) return;
+  const isOpen = !menu.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  const modal = document.getElementById(id);
+  if (!isOpen) menu.classList.remove("hidden");
+}
+
+// Modal aç
+function showModal(modalId) {
+  hideAllPanels();
+  hideAllModals();
+  const modal = document.getElementById(modalId);
   if (modal) modal.classList.remove("hidden");
 }
 
-/* ================= PANEL BUTONLARI ================= */
-function toggleFriends() { togglePanel("friendsPanel"); }
-function toggleMail() { togglePanel("mailPanel"); }
-function toggleBox() { togglePanel("boxPanel"); }
-
-/* ================= MODAL BUTONLARI ================= */
-function showCreateChannel() { openModal("channelForm"); }
-function showJoinChannel() { openModal("joinForm"); }
-function toggleUserMenu() { togglePanel("userMenu"); }
-function closeModals() { hideAllModals(); }
-
-/* ================= GENEL SOHBET ================= */
-function openGeneralChannel() {
-  hideAllPanels();
+// Modal kapat
+function closeModals() {
   hideAllModals();
-  const title = document.getElementById("chatTitle");
-  if (title) title.innerText = "Genel Sohbet";
 }
 
-/* ================= HESAP VE KULLANICI ================= */
+// ================= BUTTON FUNCTIONS =================
+
+// Arkadaşlar paneli
+function toggleFriends() {
+  togglePanel("friendsPanel");
+}
+
+// Mail paneli
+function toggleMail() {
+  togglePanel("mailPanel");
+}
+
+// Box paneli
+function toggleBox() {
+  togglePanel("boxPanel");
+}
+
+// Kanal oluştur modal
+function showCreateChannel() {
+  showModal("channelForm");
+}
+
+// Kanal katıl modal
+function showJoinChannel() {
+  showModal("joinForm");
+}
+
+// Hesabı sil modal
+function showDeleteConfirm() {
+  showModal("deleteConfirm");
+}
+
+// Kullanıcı adı değiştir modal (userMenu içinde olacak)
 function changeUsername() {
   const newName = prompt("Yeni kullanıcı adınızı girin:");
   if (!newName) return;
@@ -63,27 +91,43 @@ function changeUsername() {
   const user = firebase.auth().currentUser;
   if (!user) return;
 
-  firebase.database().ref("users/" + user.uid).update({ username: newName });
-  const myUser = document.getElementById("myUser");
-  if (myUser) myUser.innerText = newName + "#" + user.uid.slice(0,4);
+  user.updateProfile({
+    displayName: newName
+  }).then(() => {
+    document.getElementById("myUser").innerText = newName + "#" + user.uid.slice(0, 4);
+    alert("Kullanıcı adı güncellendi!");
+  }).catch(err => {
+    console.error(err);
+    alert("Hata oluştu!");
+  });
+
   closeModals();
 }
 
+// Hesabı sil
 function deleteAccount() {
-  openModal("deleteConfirm");
+  showDeleteConfirm();
 }
 
+// Hesabı sil onayla
 function confirmDeleteAccount() {
   const user = firebase.auth().currentUser;
   if (!user) return;
 
-  // Kullanıcıyı Firebase auth ve DB’den sil
-  db.ref("users/" + user.uid).remove();
   user.delete().then(() => {
-    alert("Hesabınız silindi!");
-    location.reload();
+    alert("Hesap silindi!");
+    window.location.reload();
   }).catch(err => {
-    alert("Hesap silinemedi: " + err.message);
+    console.error(err);
+    alert("Hesap silinemedi! Tekrar giriş yapmayı deneyin.");
   });
+
   closeModals();
 }
+
+// ================= DOM READY =================
+document.addEventListener("DOMContentLoaded", () => {
+  // Kullanıcı adı tıklama
+  const myUser = document.getElementById("myUser");
+  if (myUser) myUser.addEventListener("click", toggleUserMenu);
+});
