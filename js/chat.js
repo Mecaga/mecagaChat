@@ -58,3 +58,15 @@ auth.onAuthStateChanged(user => {
     loadMessages();
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("messageInput");
+
+  input.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+});
