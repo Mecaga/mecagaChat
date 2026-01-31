@@ -29,6 +29,7 @@
 
 <!-- MAIN SCREEN -->
 <div id="mainScreen" class="screen hidden">
+
   <div class="topbar">
     <div id="myUser">kullanici#0000</div>
     <div class="top-buttons">
@@ -55,9 +56,24 @@
   <div id="mailPanel" class="panel hidden">📧 Bildirimler</div>
   <div id="boxPanel" class="panel hidden">📦 Kanallar</div>
 
-  <div id="channelForm" class="hidden">...</div>
-<div id="joinForm" class="hidden">...</div>
+  <!-- POPUPS -->
+  <div id="popupOverlay" class="hidden"></div>
 
+  <div id="createChannelPopup" class="popup hidden">
+    <h3>Kanal Oluştur</h3>
+    <input id="channelNameInput" placeholder="Kanal adı">
+    <button onclick="createChannel()">Oluştur</button>
+    <button class="closeBtn" onclick="closePopup()">❌</button>
+  </div>
+
+  <div id="joinChannelPopup" class="popup hidden">
+    <h3>Kanal Katıl</h3>
+    <input id="joinChannelInput" placeholder="kanaladı#1234">
+    <button onclick="joinChannel()">Katıl</button>
+    <button class="closeBtn" onclick="closePopup()">❌</button>
+  </div>
+
+</div>
 
 <!-- Firebase CDN -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
