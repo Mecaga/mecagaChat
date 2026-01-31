@@ -9,3 +9,8 @@ function togglePanel(id) {
     if(pid!==id) document.getElementById(pid).classList.add("hidden");
   });
 }
+window.toggleMail = () => {
+  const panel = mailPanel;
+  panel.classList.toggle("hidden");
+  if (!panel.classList.contains("hidden")) loadFriendRequests();
+};
