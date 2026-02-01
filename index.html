@@ -2,134 +2,52 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <title>Mecaga Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MecagaChat</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="./css/style.css">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- ================= LOGIN ================= -->
-<div id="loginScreen" class="screen auth-box">
-  <h1 class="logo">💬 MecagaChat</h1>
-
-  <input id="loginEmail" type="email" placeholder="Gmail">
+<!-- AUTH -->
+<div id="authScreen">
+  <h2>Giriş</h2>
+  <input id="loginEmail" placeholder="Email">
   <input id="loginPassword" type="password" placeholder="Şifre">
+  <button id="loginBtn">Giriş Yap</button>
 
-  <button onclick="login()">Giriş Yap</button>
-  <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
+  <h3>Kayıt</h3>
+  <input id="registerUsername" placeholder="Kullanıcı adı">
+  <input id="registerEmail" placeholder="Email">
+  <input id="registerPassword" type="password" placeholder="Şifre">
+  <button id="registerBtn">Kayıt Ol</button>
 </div>
 
-<!-- ================= REGISTER ================= -->
-<div id="registerScreen" class="screen auth-box hidden">
-  <h1 class="logo">✨ MecagaChat</h1>
-
-  <input id="regUsername" placeholder="Kullanıcı adı">
-  <input id="regEmail" type="email" placeholder="Gmail">
-  <input id="regPassword" type="password" placeholder="Şifre">
-
-  <button onclick="register()">Kayıt Ol</button>
-  <button class="secondary" onclick="showLogin()">Geri Dön</button>
-</div>
-
-<!-- ================= MAIN ================= -->
-<div id="mainScreen" class="screen hidden">
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div id="myUser" onclick="toggleUserMenu()">kullanici#0000</div>
-
-    <div class="top-buttons">
-      <button onclick="toggleBox()">📦</button>
-      <button onclick="toggleMail()">📧</button>
-      <button onclick="toggleFriends()">❤️</button>
-    </div>
+<!-- CHAT -->
+<div id="chatScreen" class="hidden">
+  <div id="topBar">
+    <span id="myUsername"></span>
+    <button id="logoutBtn">Çıkış</button>
   </div>
 
-  <!-- MAIN BUTTONS -->
-  <div class="mainButtons">
-    <button onclick="showCreateChannel()">Kanal Oluştur</button>
-    <button onclick="showJoinChannel()">Kanal Katıl</button>
-    <button onclick="openGeneralChannel()">Genel Sohbet</button>
-  </div>
-
-  <!-- CHAT AREA -->
-  <div class="content">
-  <div id="chatTitle">Genel Sohbet</div>
   <div id="messages"></div>
 
-  <div class="chat-input">
-    <input id="messageInput" placeholder="Mesaj yaz...">
-    <button onclick="sendMessage()">Gönder</button>
+  <div id="sendBox">
+    <input id="messageInput" placeholder="Mesaj yaz">
+    <button id="sendBtn">Gönder</button>
   </div>
 </div>
 
-
-    </div>
-  </div>
-
-  <!-- ACCOUNT ACTION -->
-  <div class="account-actions">
-    <button onclick="deleteAccount()" class="danger">🗑️ Hesabı Sil</button>
-  </div>
-
-  <!-- FRIENDS PANEL -->
-  <div id="friendsPanel" class="panel hidden">
-    <h3>❤️ Arkadaşlar</h3>
-
-    <input id="addFriendInput" placeholder="kullanici#0000">
-    <button onclick="sendFriendRequest()">Ekle</button>
-
-    <div id="friendsList"></div>
-  </div>
-
-  <!-- MAIL & BOX -->
-  <div id="mailPanel" class="panel hidden"></div>
-  <div id="boxPanel" class="panel hidden"></div>
-
-  <!-- MODALS -->
-  <div id="channelForm" class="modal hidden">
-    <h3>Kanal Oluştur</h3>
-    <input id="channelNameInput" placeholder="Kanal Adı">
-    <button onclick="createChannel()">Oluştur</button>
-    <button onclick="closeModals()">İptal</button>
-  </div>
-
-  <div id="joinForm" class="modal hidden">
-    <h3>Kanal Katıl</h3>
-    <input id="joinChannelInput" placeholder="KanalAdı#ID">
-    <button onclick="joinChannel()">Katıl</button>
-    <button onclick="closeModals()">İptal</button>
-  </div>
-
-  <div id="userMenu" class="modal hidden">
-    <button onclick="changeUsername()">Kullanıcı Adı Değiştir</button>
-    <button class="danger" onclick="deleteAccount()">Hesabı Sil</button>
-    <button onclick="closeModals()">Kapat</button>
-  </div>
-
-  <!-- DELETE CONFIRM -->
-  <div id="deleteConfirm" class="modal hidden">
-    <h3>Hesabı Sil</h3>
-    <p>Bu işlem geri alınamaz.</p>
-    <button class="danger" onclick="confirmDeleteAccount()">Evet, Sil</button>
-    <button onclick="closeModals()">İptal</button>
-  </div>
-
-</div>
-
-<!-- ================= FIREBASE ================= -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<!-- ================= JS ================= -->
-<script src="./js/firebase.js"></script>
-<script src="./js/core.js"></script>
-<script src="./js/ui.js"></script>
-<script src="./js/chat.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
 
 </body>
 </html>
-  
