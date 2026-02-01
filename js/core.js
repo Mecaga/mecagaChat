@@ -1,72 +1,28 @@
-// ================= GLOBAL STATE =================
-let currentUser = null;
-let currentChannel = "general";
+// ================= FIREBASE AUTH STATE =================
+firebase.auth().onAuthStateChanged(user => {
+  const loginScreen = document.getElementById("loginScreen");
+  const registerScreen = document.getElementById("registerScreen");
+  const mainScreen = document.getElementById("mainScreen");
 
-// ================= SCREEN SWITCH =================
-function showLogin() {
-  hideAllScreens();
-  document.getElementById("loginScreen").classList.remove("hidden");
-}
+  if (user) {
+    // GİRİŞ VAR
+    loginScreen.classList.add("hidden");
+    registerScreen.classList.add("hidden");
+    mainScreen.classList.remove("hidden");
 
-function showRegister() {
-  hideAllScreens();
-  document.getElementById("registerScreen").classList.remove("hidden");
-}
+    // Kullanıcı adını yaz
+    const name = user.displayName || "kullanici";
+    document.getElementById("myUser").innerText =
+      name + "#" + user.uid.slice(0, 4);
 
-function showMain() {
-  hideAllScreens();
-  document.getElementById("mainScreen").classList.remove("hidden");
-}
+    // 🔥 MESAJLARI SADECE BURADA YÜKLE
+    loadMessages();
 
-function hideAllScreens() {
-  document.querySelectorAll(".screen").forEach(s => {
-    s.classList.add("hidden");
-  });
-}
+  } else {
+    // GİRİŞ YOK
+    mainScreen.classList.add("hidden");
+    registerScreen.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+  }
+});
 
-// ================= DEVICE DETECT =================
-function isMobile() {
-  return window.innerWidth <= 768;
-}
-
-// ================= ARKADASLIK ISTEGI GONDERME =================
-function sendFriendRequest() {
-  const input = document.getElementById("addFriendInput").value.trim();
-  if (!input.includes("#")) return alert("Kullanıcı adı hatalı");
-
-  const [name, tag] = input.split("#");
-  const db = firebase.database();
-  const myUid = firebase.auth().currentUser.uid;
-
-  db.ref("users").once("value", snap => {
-    let targetUid = null;
-
-    snap.forEach(user => {
-      if (user.val().username === `${name}#${tag}`) {
-        targetUid = user.key;
-      }
-    });
-
-    if (!targetUid) return alert("Kullanıcı bulunamadı");
-    if (targetUid === myUid) return alert("Kendini ekleyemezsin");
-
-    db.ref(`friendRequests/${targetUid}/${myUid}`).set(true);
-    alert("Arkadaş isteği gönderildi");
-  });
-}
-
-// ================= ARKADASLIK ISTEGI KABUL/RED İŞLEMLERİ =================
-
-function acceptFriend(senderUid) {
-  const myUid = firebase.auth().currentUser.uid;
-  const db = firebase.database();
-
-  db.ref(`friends/${myUid}/${senderUid}`).set(true);
-  db.ref(`friends/${senderUid}/${myUid}`).set(true);
-  db.ref(`friendRequests/${myUid}/${senderUid}`).remove();
-}
-
-function rejectFriend(senderUid) {
-  const myUid = firebase.auth().currentUser.uid;
-  firebase.database().ref(`friendRequests/${myUid}/${senderUid}`).remove();
-}
