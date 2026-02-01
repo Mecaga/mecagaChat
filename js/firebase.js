@@ -14,14 +14,3 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// ================= AUTH STATE =================
-auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUser = user;
-    document.getElementById("myUser").innerText =
-      (user.displayName || "kullanici") + "#" + user.uid.slice(0, 4);
-    showMain();
-  } else {
-    showLogin();
-  }
-});
