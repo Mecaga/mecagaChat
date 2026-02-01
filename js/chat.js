@@ -1,8 +1,3 @@
-// ================= FIREBASE =================
-const db = firebase.database();
-let currentChannel = "general";
-let messagesRef = null;
-
 // ================= MESAJ GÖNDER =================
 function sendMessage() {
   const input = document.getElementById("messageInput");
@@ -18,16 +13,14 @@ function sendMessage() {
 
   if (text === "") return;
 
-  db.ref(`channels/${currentChannel}/messages`).push({
+  db.ref("channels/" + currentChannel + "/messages").push({
     uid: user.uid,
     user: user.displayName || "kullanici",
     text: text,
     time: Date.now()
-  }).then(() => {
-    input.value = "";
-  }).catch(err => {
-    console.error("Mesaj gönderme hatası:", err);
   });
+
+  input.value = "";
 }
 
 // ================= MESAJLARI YÜKLE =================
@@ -37,25 +30,20 @@ function loadMessages() {
 
   messagesDiv.innerHTML = "";
 
-  // eski dinleyiciyi kapat
-  if (messagesRef) {
-    messagesRef.off();
-  }
+  const ref = db.ref("channels/" + currentChannel + "/messages");
+  ref.off();
 
-  messagesRef = db
-    .ref(`channels/${currentChannel}/messages`)
-    .limitToLast(50);
-
-  messagesRef.on("child_added", snapshot => {
+  ref.limitToLast(50).on("child_added", snapshot => {
     const msg = snapshot.val();
     showMessage(msg);
   });
 }
 
-// ================= MESAJI EKRANA BAS =================
+// ================= MESAJI GÖSTER =================
 function showMessage(msg) {
   const messagesDiv = document.getElementById("messages");
   const user = firebase.auth().currentUser;
+  if (!messagesDiv) return;
 
   const div = document.createElement("div");
   div.className = "message";
@@ -75,23 +63,13 @@ function showMessage(msg) {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// ================= AUTH HAZIR OLUNCA BAŞLAT =================
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    console.log("Giriş yapıldı:", user.uid);
-    loadMessages(); // 🔴 ASIL EKSİK OLAN BUYDU
-  }
-});
-
-// ================= ENTER İLE GÖNDER =================
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("messageInput");
-  if (!input) return;
-
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
+// ================= ENTER İLE GÖNDER (KESİN ÇÖZÜM) =================
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const input = document.getElementById("messageInput");
+    if (input && document.activeElement === input) {
       e.preventDefault();
       sendMessage();
     }
-  });
+  }
 });
