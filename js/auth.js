@@ -1,25 +1,30 @@
-// ================= FIREBASE =================
-const db = firebase.database();
-let currentChannel = "general";
+// auth.js
 
-// ================= UI KONTROL =================
-function showLogin() {
-  document.getElementById("loginScreen").style.display = "flex";
-  document.getElementById("chatScreen").style.display = "none";
-}
-
-function showChat() {
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("chatScreen").style.display = "flex";
-}
-
-// ================= AUTH DURUMU =================
-firebase.auth().onAuthStateChanged(user => {
+auth.onAuthStateChanged(user => {
   if (user) {
-    console.log("Giriş yapıldı:", user.uid);
     showChat();
-    loadMessages(); // chat.js içinden çağrılıyor
+    loadMessages();
   } else {
     showLogin();
   }
 });
+
+function login() {
+  const email = document.getElementById("loginEmail").value;
+  const pass = document.getElementById("loginPassword").value;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(err => alert(err.message));
+}
+
+function register() {
+  const email = document.getElementById("registerEmail").value;
+  const pass = document.getElementById("registerPassword").value;
+
+  auth.createUserWithEmailAndPassword(email, pass)
+    .catch(err => alert(err.message));
+}
+
+function logout() {
+  auth.signOut();
+}
