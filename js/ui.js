@@ -2,132 +2,126 @@
 const panels = ["friendsPanel", "mailPanel", "boxPanel"];
 const modals = ["channelForm", "joinForm", "userMenu", "deleteConfirm"];
 
-// Tüm panelleri gizle
+// --------- PANELLER ---------
 function hideAllPanels() {
   panels.forEach(id => {
-    const panel = document.getElementById(id);
-    if (panel) panel.classList.add("hidden");
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
   });
 }
 
-// Tüm modalları gizle
-function hideAllModals() {
-  modals.forEach(id => {
-    const modal = document.getElementById(id);
-    if (modal) modal.classList.add("hidden");
-  });
-}
-
-// Panel aç/kapa
-function togglePanel(panelId) {
-  const panel = document.getElementById(panelId);
+function togglePanel(id) {
+  const panel = document.getElementById(id);
   if (!panel) return;
+
   const isOpen = !panel.classList.contains("hidden");
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) panel.classList.remove("hidden");
+
+  if (!isOpen) {
+    panel.classList.remove("hidden");
+  }
 }
 
-// Kullanıcı menüsü aç/kapa
-function toggleUserMenu() {
-  const menu = document.getElementById("userMenu");
-  if (!menu) return;
-  const isOpen = !menu.classList.contains("hidden");
+// --------- MODALLAR ---------
+function hideAllModals() {
+  modals.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+  });
+}
+
+function showModal(id) {
   hideAllPanels();
   hideAllModals();
-  if (!isOpen) menu.classList.remove("hidden");
+
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.classList.remove("hidden");
+  }
 }
 
-// Modal aç
-function showModal(modalId) {
-  hideAllPanels();
-  hideAllModals();
-  const modal = document.getElementById(modalId);
-  if (modal) modal.classList.remove("hidden");
-}
-
-// Modal kapat
 function closeModals() {
   hideAllModals();
 }
 
-// ================= BUTTON FUNCTIONS =================
+// ================= BUTON FONKSİYONLARI =================
 
-// Arkadaşlar paneli
+// TOP BAR
 function toggleFriends() {
   togglePanel("friendsPanel");
 }
 
-// Mail paneli
 function toggleMail() {
   togglePanel("mailPanel");
 }
 
-// Box paneli
 function toggleBox() {
   togglePanel("boxPanel");
 }
 
-// Kanal oluştur modal
+// MAIN BUTTONS
 function showCreateChannel() {
   showModal("channelForm");
 }
 
-// Kanal katıl modal
 function showJoinChannel() {
   showModal("joinForm");
 }
 
-// Hesabı sil modal
-function showDeleteConfirm() {
-  showModal("deleteConfirm");
+// USER MENU
+function toggleUserMenu() {
+  const menu = document.getElementById("userMenu");
+  if (!menu) return;
+
+  const isOpen = !menu.classList.contains("hidden");
+  hideAllPanels();
+  hideAllModals();
+
+  if (!isOpen) {
+    menu.classList.remove("hidden");
+  }
 }
 
-// Kullanıcı adı değiştir modal (userMenu içinde olacak)
+// ================= ACCOUNT =================
 function changeUsername() {
-  const newName = prompt("Yeni kullanıcı adınızı girin:");
+  const newName = prompt("Yeni kullanıcı adını gir:");
   if (!newName) return;
 
   const user = firebase.auth().currentUser;
   if (!user) return;
 
-  user.updateProfile({
-    displayName: newName
-  }).then(() => {
-    document.getElementById("myUser").innerText = newName + "#" + user.uid.slice(0, 4);
-    alert("Kullanıcı adı güncellendi!");
-  }).catch(err => {
-    console.error(err);
-    alert("Hata oluştu!");
-  });
+  user.updateProfile({ displayName: newName })
+    .then(() => {
+      document.getElementById("myUser").innerText =
+        newName + "#" + user.uid.slice(0, 4);
+      alert("Kullanıcı adı değiştirildi");
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Hata oluştu");
+    });
 
   closeModals();
 }
 
-// Hesabı sil
 function deleteAccount() {
-  showDeleteConfirm();
+  showModal("deleteConfirm");
 }
 
-// Hesabı sil onayla
 function confirmDeleteAccount() {
   const user = firebase.auth().currentUser;
   if (!user) return;
 
-  user.delete().then(() => {
-    alert("Hesap silindi!");
-    window.location.reload();
-  }).catch(err => {
-    console.error(err);
-    alert("Hesap silinemedi! Tekrar giriş yapmayı deneyin.");
-  });
+  user.delete()
+    .then(() => {
+      alert("Hesap silindi");
+      location.reload();
+    })
+    .catch(err => {
+      alert("Hesap silinemedi. Tekrar giriş yap.");
+      console.error(err);
+    });
 
   closeModals();
 }
-
-// ================= DOM READY =================
-document.addEventListener("DOMContentLoaded", () => {
-  // Kullanıcı adı tıklama
-  const myUser = document.getElementById("myUser");
-  if (myUser) myUser.addEventListener("click", toggleUserMenu);
-});
