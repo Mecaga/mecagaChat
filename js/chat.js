@@ -1,49 +1,32 @@
-const auth = firebase.auth();
+// js/chat.js
+let currentChannel = "general";
 
-// ================= KAYIT =================
-function register() {
-  const username = document.getElementById("registerUsername").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
-  const password = document.getElementById("registerPassword").value;
+document.getElementById("sendBtn").onclick = sendMessage;
 
-  if (!username || !email || !password) {
-    alert("Tüm alanları doldur");
-    return;
-  }
+function sendMessage() {
+  const text = messageInput.value.trim();
+  const user = auth.currentUser;
+  if (!text || !user) return;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(cred => {
-      return cred.user.updateProfile({
-        displayName: username
-      });
-    })
-    .then(() => {
-      console.log("Kayıt başarılı");
-    })
-    .catch(err => alert(err.message));
+  db.ref("channels/" + currentChannel + "/messages").push({
+    uid: user.uid,
+    text: text,
+    time: Date.now()
+  });
+
+  messageInput.value = "";
 }
 
-// ================= GİRİŞ =================
-function login() {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+function loadMessages() {
+  messages.innerHTML = "";
 
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(err => alert(err.message));
+  db.ref("channels/" + currentChannel + "/messages")
+    .limitToLast(50)
+    .on("child_added", snap => {
+      const msg = snap.val();
+      const div = document.createElement("div");
+      div.innerText = msg.text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    });
 }
-
-// ================= OTOMATİK YÖNLENDİRME =================
-auth.onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById("authScreen").classList.add("hidden");
-    document.getElementById("chatScreen").classList.remove("hidden");
-
-    document.getElementById("myUser").innerText =
-      user.displayName + "#" + user.uid.slice(0, 4);
-
-    loadMessages();
-  } else {
-    document.getElementById("authScreen").classList.remove("hidden");
-    document.getElementById("chatScreen").classList.add("hidden");
-  }
-});
