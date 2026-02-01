@@ -1,11 +1,11 @@
-// ui.js
-
-function showLogin() {
-  document.getElementById("loginScreen").style.display = "flex";
-  document.getElementById("chatScreen").style.display = "none";
+// js/ui.js
+function showAuth() {
+  document.getElementById("authScreen").classList.remove("hidden");
+  document.getElementById("chatScreen").classList.add("hidden");
 }
 
-function showChat() {
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("chatScreen").style.display = "flex";
+function showChat(username) {
+  document.getElementById("authScreen").classList.add("hidden");
+  document.getElementById("chatScreen").classList.remove("hidden");
+  document.getElementById("myUsername").innerText = username;
 }
