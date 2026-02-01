@@ -14,11 +14,11 @@ function sendMessage() {
   if (text === "") return;
 
   db.ref("channels/" + currentChannel + "/messages").push({
-    uid: user.uid,
-    user: user.email,
-    text: text,
-    time: Date.now()
-  });
+  uid: user.uid,
+  user: user.displayName || "kullanici",
+  text: text,
+  time: Date.now()
+});
 
   input.value = "";
 }
