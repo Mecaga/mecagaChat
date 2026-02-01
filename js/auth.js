@@ -1,49 +1,41 @@
-const auth = firebase.auth();
+// js/auth.js
+document.getElementById("loginBtn").onclick = login;
+document.getElementById("registerBtn").onclick = register;
+document.getElementById("logoutBtn").onclick = logout;
 
-// ================= KAYIT =================
-function register() {
-  const username = document.getElementById("registerUsername").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
-  const password = document.getElementById("registerPassword").value;
-
-  if (!username || !email || !password) {
-    alert("Tüm alanları doldur");
-    return;
-  }
-
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(cred => {
-      return cred.user.updateProfile({
-        displayName: username
-      });
-    })
-    .then(() => {
-      console.log("Kayıt başarılı");
-    })
-    .catch(err => alert(err.message));
-}
-
-// ================= GİRİŞ =================
-function login() {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(err => alert(err.message));
-}
-
-// ================= OTOMATİK YÖNLENDİRME =================
 auth.onAuthStateChanged(user => {
   if (user) {
-    document.getElementById("authScreen").classList.add("hidden");
-    document.getElementById("chatScreen").classList.remove("hidden");
-
-    document.getElementById("myUser").innerText =
-      user.displayName + "#" + user.uid.slice(0, 4);
-
-    loadMessages();
+    db.ref("users/" + user.uid).once("value").then(snap => {
+      showChat(snap.val().username);
+      loadMessages();
+    });
   } else {
-    document.getElementById("authScreen").classList.remove("hidden");
-    document.getElementById("chatScreen").classList.add("hidden");
+    showAuth();
   }
 });
+
+function register() {
+  const username = registerUsername.value.trim();
+  const email = registerEmail.value.trim();
+  const password = registerPassword.value;
+
+  if (!username) return alert("Kullanıcı adı boş");
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(res => {
+      db.ref("users/" + res.user.uid).set({
+        username: username
+      });
+    });
+}
+
+function login() {
+  auth.signInWithEmailAndPassword(
+    loginEmail.value,
+    loginPassword.value
+  );
+}
+
+function logout() {
+  auth.signOut();
+}
