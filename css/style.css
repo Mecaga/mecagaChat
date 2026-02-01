@@ -1,20 +1,112 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  background: #111;
-  color: #fff;
-  font-family: Arial;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
 }
 
-.hidden { display: none; }
+/* GENEL */
+.hidden {
+  display: none;
+}
 
-input, button {
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+input {
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+/* AUTH */
+#authScreen {
+  max-width: 360px;
+  margin: 80px auto;
+  background: #020617;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#authScreen h2,
+#authScreen h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#authScreen input,
+#authScreen button {
   width: 100%;
-  padding: 10px;
-  margin: 5px 0;
+  padding: 12px;
+  margin-top: 8px;
 }
 
+/* CHAT */
+#chatScreen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ÜST BAR */
+#topBar {
+  height: 55px;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid #1e293b;
+}
+
+/* MESAJLAR */
 #messages {
-  height: 60vh;
+  flex: 1;
   overflow-y: auto;
-  background: #1a1a1a;
+  padding: 12px;
+  background: #020617;
+}
+
+/* TEK MESAJ */
+#messages div {
+  background: #1e293b;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  max-width: 75%;
+}
+
+/* GÖNDERME ALANI */
+#sendBox {
+  display: flex;
+  gap: 8px;
   padding: 10px;
+  background: #020617;
+  border-top: 1px solid #1e293b;
+}
+
+#messageInput {
+  flex: 1;
+  padding: 12px;
+  background: #1e293b;
+  color: white;
+}
+
+#sendBtn {
+  padding: 12px 18px;
 }
