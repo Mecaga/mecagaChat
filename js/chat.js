@@ -1,58 +1,49 @@
-// chat.js
-let currentChannel = "general";
+const auth = firebase.auth();
 
-function sendMessage() {
-  const input = document.getElementById("messageInput");
-  const text = input.value.trim();
-  const user = auth.currentUser;
+// ================= KAYIT =================
+function register() {
+  const username = document.getElementById("registerUsername").value.trim();
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("registerPassword").value;
 
-  if (!user) {
-    alert("Giriş yok");
+  if (!username || !email || !password) {
+    alert("Tüm alanları doldur");
     return;
   }
 
-  if (text === "") return;
-
-  db.ref("channels/" + currentChannel + "/messages").push({
-  uid: user.uid,
-  user: user.displayName || "kullanici",
-  text: text,
-  time: Date.now()
-});
-
-  input.value = "";
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(cred => {
+      return cred.user.updateProfile({
+        displayName: username
+      });
+    })
+    .then(() => {
+      console.log("Kayıt başarılı");
+    })
+    .catch(err => alert(err.message));
 }
 
-function loadMessages() {
-  const messagesDiv = document.getElementById("messages");
-  messagesDiv.innerHTML = "";
+// ================= GİRİŞ =================
+function login() {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-  const ref = db.ref("channels/" + currentChannel + "/messages");
-  ref.off();
-
-  ref.limitToLast(50).on("child_added", snap => {
-    const msg = snap.val();
-    showMessage(msg);
-  });
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(err => alert(err.message));
 }
 
-function showMessage(msg) {
-  const messagesDiv = document.getElementById("messages");
-  const div = document.createElement("div");
+// ================= OTOMATİK YÖNLENDİRME =================
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById("authScreen").classList.add("hidden");
+    document.getElementById("chatScreen").classList.remove("hidden");
 
-  div.className = "message";
-  div.innerHTML = `<b>${msg.user}</b>: ${msg.text}`;
+    document.getElementById("myUser").innerText =
+      user.displayName + "#" + user.uid.slice(0, 4);
 
-  messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-// ENTER ile gönder
-document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("messageInput");
-  if (input) {
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendMessage();
-    });
+    loadMessages();
+  } else {
+    document.getElementById("authScreen").classList.remove("hidden");
+    document.getElementById("chatScreen").classList.add("hidden");
   }
 });
