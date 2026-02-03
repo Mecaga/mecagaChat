@@ -2,12 +2,8 @@ import { register, login } from "./auth.js";
 
 window.registerUser = async function(){
 
-const username = usernameInput.value;
-const email = emailInput.value;
-const password = passwordInput.value;
-
 try{
-await register(username,email,password);
+await register(usernameInput.value,emailInput.value,passwordInput.value);
 alert("Kayıt başarılı");
 }catch(e){
 alert(e.message);
@@ -17,12 +13,11 @@ alert(e.message);
 
 window.loginUser = async function(){
 
-const email = emailInput.value;
-const password = passwordInput.value;
-
 try{
-await login(email,password);
-alert("Giriş başarılı");
+await login(emailInput.value,passwordInput.value);
+
+window.location.href = "chat.html";
+
 }catch(e){
 alert(e.message);
 }
