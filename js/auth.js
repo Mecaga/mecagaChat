@@ -1,28 +1,29 @@
 import { auth, db } from "./firebase.js";
 
 import {
-createUserWithEmailAndPassword
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import {
-ref,
-set
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { ref, set } from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 
 export async function register(username,email,password){
 
 const userCred = await createUserWithEmailAndPassword(auth,email,password);
 
-const uid = userCred.user.uid;
+const tag = Math.floor(1000 + Math.random()*9000);
 
-/* Rastgele 4 haneli ID */
-const userTag = Math.floor(1000 + Math.random() * 9000);
-
-await set(ref(db,"users/"+uid),{
+await set(ref(db,"users/"+userCred.user.uid),{
 
 username: username,
-tag: userTag
+tag: tag
 
 });
 
+}
+
+export async function login(email,password){
+await signInWithEmailAndPassword(auth,email,password);
 }
