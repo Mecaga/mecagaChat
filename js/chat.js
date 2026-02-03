@@ -63,7 +63,7 @@ const snap = await get(ref(db,"users/"+user.uid));
 if(snap.exists()){
 
 document.getElementById("usernameDisplay").innerText =
-snap.val().username;
+snap.val().username + "#" + snap.val().tag;
 
 }
 
