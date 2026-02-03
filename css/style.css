@@ -1,117 +1,83 @@
 body{
 margin:0;
 font-family:Arial;
-background:#2f3136;
+background:#1e1f22;
 color:white;
 }
 
-/* LOGIN */
-
-.loginBox{
-width:300px;
-margin:120px auto;
-background:#202225;
-padding:20px;
-border-radius:10px;
+.logo{
 text-align:center;
+margin-top:50px;
 }
 
-.loginBox input{
-width:100%;
+.auth-box{
+width:300px;
+margin:30px auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.auth-box input{
 padding:10px;
-margin:6px 0;
 border:none;
 border-radius:6px;
 }
 
-.loginBox button{
-width:100%;
-padding:10px;
-margin-top:6px;
-background:#5865F2;
-border:none;
-color:white;
+.auth-buttons{
+display:flex;
+gap:10px;
 }
 
-
-/* TOPBAR */
+.auth-buttons button{
+flex:1;
+padding:10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#5865f2;
+color:white;
+}
 
 .topbar{
-height:55px;
-background:#202225;
 display:flex;
+justify-content:space-between;
 align-items:center;
-justify-content:center;
-position:fixed;
-top:0;
-width:100%;
-z-index:5;
+background:#2b2d31;
+padding:10px;
 }
 
-#menuBtn{
-position:absolute;
-left:10px;
-font-size:22px;
-color:white;
-background:none;
-border:none;
-cursor:pointer;
+.chat-box{
+height:70vh;
+overflow-y:auto;
+padding:10px;
 }
 
-.logoRight{
-position:absolute;
-right:10px;
-font-weight:bold;
+.message{
+margin:5px 0;
 }
 
-
-/* SIDEBAR */
-
-.sidebar{
-position:fixed;
-left:-200px;
-top:0;
-width:200px;
-height:100%;
-background:#202225;
-padding:20px;
-transition:0.3s;
-z-index:10;
-}
-
-.sidebar.open{
-left:0;
-}
-
-
-/* CHAT */
-
-.chatArea{
-margin-top:70px;
-padding:15px;
-padding-bottom:80px;
-}
-
-.messageInputArea{
+.message-bar{
 position:fixed;
 bottom:0;
 width:100%;
-background:#202225;
-padding:10px;
 display:flex;
+background:#2b2d31;
+padding:10px;
 }
 
-.messageInputArea input{
+.message-bar input{
 flex:1;
-padding:12px;
-border-radius:6px;
+padding:10px;
 border:none;
+border-radius:6px;
 }
 
-.messageInputArea button{
-margin-left:6px;
-padding:12px;
-background:#5865F2;
+.message-bar button{
+margin-left:10px;
+padding:10px;
 border:none;
+border-radius:6px;
+background:#5865f2;
 color:white;
 }
