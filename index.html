@@ -2,28 +2,35 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>MecagaChat Giriş</title>
-<link rel="stylesheet" href="css/style.css">
+<title>MecagaChat</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="loginContainer">
+<h1 class="logo">MecagaChat</h1>
 
-<h1 class="logoTitle">MecagaChat</h1>
+<div class="auth-box">
 
-<input id="usernameInput" placeholder="Kullanıcı adı">
+<h2>Giriş / Kayıt</h2>
 
-<input id="emailInput" placeholder="Email">
+<input id="username" placeholder="Kullanıcı adı">
 
-<input id="passwordInput" type="password" placeholder="Şifre">
+<input id="email" placeholder="Gmail">
 
-<button onclick="registerUser()">Kayıt Ol</button>
-<button onclick="loginUser()">Giriş Yap</button>
+<input id="password" type="password" placeholder="Şifre">
+
+<div class="auth-buttons">
+<button onclick="register()">Kayıt Ol</button>
+<button onclick="login()">Giriş Yap</button>
+</div>
+
+<p id="authStatus"></p>
 
 </div>
 
-<script type="module" src="js/main.js"></script>
+<script type="module" src="auth.js"></script>
 
 </body>
 </html>
