@@ -5,25 +5,57 @@ createUserWithEmailAndPassword,
 signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import { ref, set } from
-"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import {
+doc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+function generateID(){
+return Math.floor(1000 + Math.random() * 9000);
+}
 
-export async function register(username,email,password){
+window.register = async function(){
+
+const username = document.getElementById("username").value;
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+if(!username || !email || !password){
+alert("Tüm alanları doldur");
+return;
+}
+
+try{
 
 const userCred = await createUserWithEmailAndPassword(auth,email,password);
 
-const tag = Math.floor(1000 + Math.random()*9000);
+const id = generateID();
 
-await set(ref(db,"users/"+userCred.user.uid),{
-
+await setDoc(doc(db,"users",userCred.user.uid),{
 username: username,
-tag: tag
-
+tag: username + "#" + id
 });
+
+window.location.href="chat.html";
+
+}catch(err){
+alert(err.message);
+}
 
 }
 
-export async function login(email,password){
+window.login = async function(){
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
 await signInWithEmailAndPassword(auth,email,password);
+window.location.href="chat.html";
+
+}catch(err){
+alert(err.message);
+}
+
 }
