@@ -1,43 +1,30 @@
-// ================= MAIN SYSTEM =================
-const db = firebase.database();
-const auth = firebase.auth();
+import { register, login } from "./auth.js";
 
-let currentChannel = "general";
+window.registerUser = async function(){
 
-// Kanal değiştirme
-function openGeneralChannel() {
-  currentChannel = "general";
-  document.getElementById("chatTitle").innerText = "Genel Sohbet";
-  loadMessages();
+const username = usernameInput.value;
+const email = emailInput.value;
+const password = passwordInput.value;
+
+try{
+await register(username,email,password);
+alert("Kayıt başarılı");
+}catch(e){
+alert(e.message);
 }
 
-// Kanal oluşturma
-function createChannel() {
-  const input = document.getElementById("channelNameInput");
-  const name = input.value.trim();
-  if (!name) return alert("Kanal adı girin!");
-
-  db.ref("channels/" + name).set({
-    createdBy: auth.currentUser.uid,
-    createdAt: Date.now()
-  }).then(() => {
-    alert("Kanal oluşturuldu!");
-    input.value = "";
-    closeModals();
-  });
 }
 
-// Kanal katıl
-function joinChannel() {
-  const input = document.getElementById("joinChannelInput");
-  const channel = input.value.trim();
-  if (!channel) return alert("Kanal adı girin!");
+window.loginUser = async function(){
 
-  db.ref("channels/" + channel).once("value", snapshot => {
-    if (!snapshot.exists()) return alert("Kanal bulunamadı!");
-    currentChannel = channel;
-    document.getElementById("chatTitle").innerText = channel;
-    loadMessages();
-    closeModals();
-  });
+const email = emailInput.value;
+const password = passwordInput.value;
+
+try{
+await login(email,password);
+alert("Giriş başarılı");
+}catch(e){
+alert(e.message);
+}
+
 }
