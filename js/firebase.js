@@ -1,3 +1,9 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 // ================= FIREBASE INIT =================
 const firebaseConfig = {
   apiKey: "AIzaSyC46gx7XPMN607cZR0xPoryIXlWf7D3nuI",
@@ -9,8 +15,7 @@ const firebaseConfig = {
   appId: "1:883254383531:web:5622ae539f774bba64b8ee"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const db = firebase.database();
-
+export const auth = getAuth(app);
+export const db = getDatabase(app);
