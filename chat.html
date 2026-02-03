@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <title>MecagaChat</title>
 
 <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
 
-<!-- Üst bar -->
+<!-- Üst Bar -->
 <div class="topbar">
 
 <button id="menuBtn">☰</button>
@@ -19,7 +18,7 @@
 
 </div>
 
-<!-- Sidebar -->
+<!-- Sidebar Menü -->
 <div id="sidebar" class="sidebar">
 
 <h3>Menü</h3>
@@ -30,10 +29,17 @@
 
 </div>
 
-<!-- Chat alanı -->
+<!-- Chat Alanı -->
 <div class="chatArea">
 
-<p>Mesajlar burada görünecek</p>
+<div id="messages"></div>
+
+<div class="messageInputArea">
+
+<input id="messageInput" placeholder="Mesaj yaz...">
+<button id="sendBtn">Gönder</button>
+
+</div>
 
 </div>
 
