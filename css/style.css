@@ -60,13 +60,12 @@ margin-top:60px;
 padding:20px;
 }
 
-.messageInputArea{
-position:fixed;
-bottom:0;
-width:100%;
-background:#202225;
-padding:10px;
-display:flex;
+.messageInputArea input{
+flex:1;
+padding:15px;
+font-size:16px;
+border-radius:8px;
+border:none;
 }
 
 .messageInputArea input{
