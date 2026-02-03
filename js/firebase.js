@@ -1,10 +1,11 @@
+// firebase.js
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ================= FIREBASE INIT =================
 const firebaseConfig = {
   apiKey: "AIzaSyC46gx7XPMN607cZR0xPoryIXlWf7D3nuI",
   authDomain: "mecagachat-ec3a7.firebaseapp.com",
@@ -18,4 +19,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
-export const db = getDatabase(app);
+export const db = getFirestore(app);
