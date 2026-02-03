@@ -1,64 +1,189 @@
+/* ================================================= */
+/* GENEL BODY AYARLARI */
+/* ================================================= */
+
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, Helvetica, sans-serif;
 background:#2f3136;
 color:white;
 }
 
+
+/* ================================================= */
+/* GİRİŞ SAYFASI TASARIM */
+/* ================================================= */
+
 .loginContainer{
-width:300px;
-margin:100px auto;
+width:320px;
+margin:120px auto;
 text-align:center;
+background:#202225;
+padding:25px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,0.4);
 }
 
-input{
+.logo{
+margin-bottom:20px;
+}
+
+.loginContainer input{
 width:100%;
-padding:10px;
-margin:5px 0;
+padding:12px;
+margin:8px 0;
 border:none;
-border-radius:5px;
+border-radius:6px;
+font-size:15px;
 }
 
-button{
+.buttonGroup button{
 width:100%;
-padding:10px;
-margin-top:5px;
+padding:12px;
+margin-top:8px;
 background:#5865F2;
 border:none;
 color:white;
-border-radius:5px;
+border-radius:6px;
+font-size:15px;
 cursor:pointer;
+transition:0.2s;
 }
 
-/* Top bar */
+.buttonGroup button:hover{
+background:#4752C4;
+}
+
+
+/* ================================================= */
+/* ÜST BAR (CHAT HEADER) */
+/* ================================================= */
+
 .topbar{
-height:50px;
+height:55px;
 background:#202225;
 display:flex;
 align-items:center;
-padding:10px;
+padding:0 15px;
+box-shadow:0 2px 5px rgba(0,0,0,0.4);
 }
 
-/* Sidebar */
+#usernameDisplay{
+margin:0;
+font-size:18px;
+}
+
+
+/* ================================================= */
+/* MENÜ BUTONU */
+/* ================================================= */
+
+#menuBtn{
+font-size:18px;
+padding:5px 10px;
+background:none;
+border:none;
+color:white;
+cursor:pointer;
+margin-right:15px;
+transition:0.2s;
+}
+
+#menuBtn:hover{
+color:#5865F2;
+}
+
+
+/* ================================================= */
+/* SIDEBAR PANEL */
+/* ================================================= */
+
 .sidebar{
 position:fixed;
-left:-220px;
+left:-230px;
 top:0;
-width:220px;
+width:230px;
 height:100%;
 background:#202225;
 padding:20px;
 transition:0.3s;
+box-shadow:2px 0 10px rgba(0,0,0,0.4);
+z-index:10;
 }
 
 .sidebar.open{
 left:0;
 }
 
+.sidebar h3{
+margin-top:0;
+}
+
+.sidebar p{
+padding:8px;
+border-radius:6px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.sidebar p:hover{
+background:#2f3136;
+}
+
+
+/* ================================================= */
+/* CHAT MESAJ ALANI */
+/* ================================================= */
+
 .chatArea{
 margin-top:60px;
 padding:20px;
+padding-bottom:90px;
 }
+
+#messages{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+
+/* ================================================= */
+/* MESAJ BALONCUKLARI */
+/* ================================================= */
+
+.message{
+background:#40444b;
+padding:10px 15px;
+border-radius:10px;
+max-width:60%;
+word-wrap:break-word;
+}
+
+.myMessage{
+background:#5865F2;
+align-self:flex-end;
+}
+
+
+/* ================================================= */
+/* MESAJ YAZMA KUTUSU */
+/* ================================================= */
+
+.messageInputArea{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#202225;
+padding:15px;
+display:flex;
+box-sizing:border-box;
+box-shadow:0 -2px 5px rgba(0,0,0,0.4);
+}
+
+
+/* MESAJ INPUT */
 
 .messageInputArea input{
 flex:1;
@@ -66,15 +191,24 @@ padding:15px;
 font-size:16px;
 border-radius:8px;
 border:none;
+outline:none;
 }
 
-.messageInputArea input{
-flex:1;
-margin-right:10px;
-}
+
+/* GÖNDER BUTONU */
+
 .messageInputArea button{
-padding:12px 20px;
+padding:12px 22px;
 margin-left:10px;
 font-size:15px;
 border-radius:8px;
+border:none;
+background:#5865F2;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+.messageInputArea button:hover{
+background:#4752C4;
 }
