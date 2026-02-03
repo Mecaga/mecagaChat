@@ -11,6 +11,10 @@ get
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 
+/* ========================= */
+/* SIDEBAR */
+/* ========================= */
+
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 
@@ -19,14 +23,21 @@ sidebar.classList.toggle("open");
 };
 
 
+/* ========================= */
+/* ELEMENTLER */
+/* ========================= */
+
 const msgInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 const messagesDiv = document.getElementById("messages");
 
 let currentUser = null;
+let currentUsername = "";
 
 
-/* Kullanıcı kontrol */
+/* ========================= */
+/* KULLANICI KONTROL */
+/* ========================= */
 
 onAuthStateChanged(auth, async (user)=>{
 
@@ -37,18 +48,25 @@ return;
 
 currentUser = user;
 
-/* Kullanıcı adı çek */
-
+/* Firebase kullanıcı verisi çek */
 const snap = await get(ref(db,"users/"+user.uid));
 
 if(snap.exists()){
 
+const data = snap.val();
+
+currentUsername = data.username + "#" + data.tag;
+
+/* ÜSTTE GÖSTER */
 document.getElementById("usernameDisplay").innerText =
-snap.val().username + "#" + snap.val().tag;
+currentUsername;
 
 }
 
-/* Mesajları dinle */
+
+/* ========================= */
+/* MESAJLARI DİNLE */
+/* ========================= */
 
 onValue(ref(db,"messages"), (snapshot)=>{
 
@@ -62,10 +80,11 @@ const div = document.createElement("div");
 
 div.classList.add("message");
 
-if(msg.uid === user.uid){
+if(msg.uid === currentUser.uid){
 div.classList.add("myMessage");
 }
 
+/* username#tag mesajda görünür */
 div.innerText = msg.username + ": " + msg.text;
 
 messagesDiv.appendChild(div);
@@ -77,7 +96,9 @@ messagesDiv.appendChild(div);
 });
 
 
-/* Mesaj gönder */
+/* ========================= */
+/* MESAJ GÖNDER */
+/* ========================= */
 
 sendBtn.onclick = sendMessage;
 
@@ -96,7 +117,7 @@ if(text === "") return;
 push(ref(db,"messages"),{
 
 uid: currentUser.uid,
-username: document.getElementById("usernameDisplay").innerText,
+username: currentUsername,
 text: text,
 time: Date.now()
 
