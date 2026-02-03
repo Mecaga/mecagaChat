@@ -30,3 +30,41 @@ function loadMessages() {
       messages.scrollTop = messages.scrollHeight;
     });
 }
+import { auth, db } from "./firebase.js";
+
+import { onAuthStateChanged } from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { ref, get } from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.onclick = () => {
+
+sidebar.classList.toggle("open");
+
+};
+
+
+onAuthStateChanged(auth, async (user)=>{
+
+if(!user){
+
+window.location.href = "index.html";
+return;
+
+}
+
+const snap = await get(ref(db,"users/"+user.uid));
+
+if(snap.exists()){
+
+document.getElementById("usernameDisplay").innerText =
+snap.val().username;
+
+}
+
+});
