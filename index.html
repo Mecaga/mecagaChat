@@ -1,145 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>MecagaChat</title>
+<title>MecagaChat Giriş</title>
 
-<style>
-
-body{
-  margin:0;
-  font-family: Arial;
-  background: linear-gradient(135deg,#2c3e50,#4ca1af);
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.box{
-  background:white;
-  padding:30px;
-  border-radius:12px;
-  width:300px;
-  text-align:center;
-  box-shadow:0 0 15px rgba(0,0,0,0.3);
-}
-
-h1{
-  margin-bottom:20px;
-}
-
-input{
-  width:90%;
-  padding:10px;
-  margin:6px;
-  border-radius:6px;
-  border:1px solid gray;
-}
-
-button{
-  width:95%;
-  padding:10px;
-  margin-top:8px;
-  border:none;
-  border-radius:6px;
-  background:#4ca1af;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#2c3e50;
-}
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<div class="box">
+<div class="loginContainer">
 
-<h1>MecagaChat</h1>
+<h1 class="logo">MecagaChat</h1>
 
-<input id="username" placeholder="Kullanıcı Adı (Sadece kayıt)">
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Şifre">
+<input id="usernameInput" placeholder="Kullanıcı adı">
 
-<button onclick="register()">Kayıt Ol</button>
-<button onclick="login()">Giriş Yap</button>
+<input id="emailInput" placeholder="Email">
+
+<input id="passwordInput" type="password" placeholder="Şifre">
+
+<div class="buttonGroup">
+<button onclick="registerUser()">Kayıt Ol</button>
+<button onclick="loginUser()">Giriş Yap</button>
+</div>
 
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { getDatabase, ref, set }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-
-const firebaseConfig = {
-  apiKey: "BURAYA",
-  authDomain: "BURAYA",
-  databaseURL: "BURAYA",
-  projectId: "BURAYA",
-  storageBucket: "BURAYA",
-  messagingSenderId: "BURAYA",
-  appId: "BURAYA"
-};
-
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-
-
-window.register = function(){
-
-  const username = document.getElementById("username").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  createUserWithEmailAndPassword(auth,email,password)
-  .then((userCredential)=>{
-
-    const user = userCredential.user;
-
-    set(ref(db,"users/"+user.uid),{
-      username: username,
-      email: email
-    });
-
-    alert("Kayıt başarılı");
-
-  })
-  .catch(err => alert(err.message));
-
-}
-
-
-window.login = function(){
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  signInWithEmailAndPassword(auth,email,password)
-  .then(()=>{
-    alert("Giriş başarılı");
-  })
-  .catch(err => alert(err.message));
-
-}
-
-</script>
+<script type="module" src="js/main.js"></script>
 
 </body>
 </html>
-
-<link rel="stylesheet" href="css/style.css">
-
-<script type="module" src="js/main.js"></script>
