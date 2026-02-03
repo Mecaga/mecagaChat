@@ -3,48 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>MecagaChat</title>
-<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ÜST BAR -->
 <div class="topbar">
 
-<button id="menuBtn">☰</button>
+<span id="userTag">...</span>
 
-<div id="usernameDisplay">...</div>
+<h2>MecagaChat</h2>
 
-<div class="appTitle">MecagaChat</div>
-
-</div>
-
-
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-
-<p onclick="goMenu()">Ana Menü</p>
+<button id="logoutBtn">Çıkış</button>
 
 </div>
 
+<div id="chatBox" class="chat-box"></div>
 
-<!-- MESAJ ALANI -->
-<div class="chatArea">
-
-<div id="messages"></div>
-
-</div>
-
-
-<!-- MESAJ YAZMA -->
-<div class="messageInputArea">
+<div class="message-bar">
 
 <input id="messageInput" placeholder="Mesaj yaz...">
-<button id="sendBtn">Gönder</button>
+
+<button onclick="sendMessage()">Gönder</button>
 
 </div>
 
-<script type="module" src="js/chat.js"></script>
+<script type="module" src="chat.js"></script>
 
 </body>
 </html>
