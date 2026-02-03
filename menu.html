@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <title>MecagaChat Menü</title>
@@ -8,29 +8,33 @@
 
 <body>
 
+<!-- ÜST BAR -->
 <div class="topbar">
 
 <button id="menuBtn">☰</button>
 
 <div id="usernameDisplay">...</div>
 
-<div class="logoRight">MecagaChat</div>
+<div class="appTitle">MecagaChat</div>
 
 </div>
 
 
+<!-- SIDEBAR -->
 <div id="sidebar" class="sidebar">
+
+<p onclick="goChat()">Sohbete Gir</p>
 <p id="logoutBtn">Çıkış Yap</p>
+
 </div>
 
 
+<!-- ANA MENÜ -->
 <div class="menuArea">
 
-<h2>ANA MENÜ</h2>
+<h2>Ana Menü</h2>
 
-<button onclick="window.location='chat.html'">
-Sohbete Gir
-</button>
+<button onclick="goChat()">Sohbete Gir</button>
 
 </div>
 
