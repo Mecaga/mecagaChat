@@ -1,9 +1,5 @@
 import { register, login } from "./auth.js";
 
-const usernameInput = document.getElementById("usernameInput");
-const emailInput = document.getElementById("emailInput");
-const passwordInput = document.getElementById("passwordInput");
-
 window.registerUser = async function(){
 
 await register(
@@ -12,7 +8,7 @@ emailInput.value,
 passwordInput.value
 );
 
-alert("Kayıt başarılı");
+alert("Kayıt tamam");
 
 };
 
@@ -23,6 +19,6 @@ emailInput.value,
 passwordInput.value
 );
 
-window.location.href="chat.html";
+window.location="menu.html";
 
 };
