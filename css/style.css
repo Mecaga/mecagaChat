@@ -1,7 +1,3 @@
-/* ================================= */
-/* GENEL */
-/* ================================= */
-
 body{
 margin:0;
 font-family:Arial;
@@ -10,9 +6,38 @@ color:white;
 }
 
 
-/* ================================= */
+/* LOGIN */
+
+.loginContainer{
+width:300px;
+margin:120px auto;
+text-align:center;
+background:#202225;
+padding:20px;
+border-radius:10px;
+}
+
+.loginContainer input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+border-radius:6px;
+}
+
+.loginContainer button{
+width:100%;
+padding:12px;
+margin-top:8px;
+background:#5865F2;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+
 /* TOPBAR */
-/* ================================= */
 
 .topbar{
 height:55px;
@@ -23,15 +48,18 @@ justify-content:center;
 position:fixed;
 top:0;
 width:100%;
-z-index:5;
 }
 
-/* Menü butonu sol köşe */
+.logoRight{
+position:absolute;
+right:15px;
+font-weight:bold;
+}
+
 #menuBtn{
 position:absolute;
 left:10px;
-font-size:16px;
-padding:4px 8px;
+font-size:18px;
 background:none;
 border:none;
 color:white;
@@ -43,30 +71,30 @@ font-size:18px;
 }
 
 
-/* ================================= */
 /* SIDEBAR */
-/* ================================= */
 
 .sidebar{
 position:fixed;
-left:-220px;
+left:-200px;
 top:0;
-width:220px;
+width:200px;
 height:100%;
 background:#202225;
 padding:20px;
 transition:0.3s;
-z-index:10;
 }
 
 .sidebar.open{
 left:0;
 }
 
+.sidebar p{
+cursor:pointer;
+color:#ff6b6b;
+}
 
-/* ================================= */
-/* CHAT AREA */
-/* ================================= */
+
+/* CHAT */
 
 .chatArea{
 margin-top:65px;
@@ -80,16 +108,11 @@ flex-direction:column;
 gap:8px;
 }
 
-
-/* ================================= */
-/* MESAJ BALONU */
-/* ================================= */
-
 .message{
 background:#40444b;
 padding:10px;
 border-radius:10px;
-max-width:65%;
+max-width:60%;
 }
 
 .myMessage{
@@ -98,9 +121,7 @@ align-self:flex-end;
 }
 
 
-/* ================================= */
-/* MESAJ YAZMA ALANI */
-/* ================================= */
+/* INPUT */
 
 .messageInputArea{
 position:fixed;
@@ -109,48 +130,20 @@ width:100%;
 background:#202225;
 display:flex;
 padding:10px;
-box-sizing:border-box;
 }
 
 .messageInputArea input{
 flex:1;
 padding:14px;
-font-size:16px;
-border-radius:8px;
 border:none;
+border-radius:8px;
 }
 
 .messageInputArea button{
-padding:12px 18px;
+padding:12px 20px;
 margin-left:8px;
 border:none;
 border-radius:8px;
 background:#5865F2;
 color:white;
-cursor:pointer;
-}
-
-
-/* ================================= */
-/* 📱 TELEFON TASARIM */
-/* ================================= */
-
-@media (max-width:700px){
-
-#usernameDisplay{
-font-size:16px;
-}
-
-.sidebar{
-width:180px;
-}
-
-.message{
-max-width:85%;
-}
-
-.messageInputArea input{
-font-size:14px;
-}
-
 }
