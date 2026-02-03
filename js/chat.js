@@ -11,33 +11,28 @@ get
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 
-/* ========================= */
-/* SIDEBAR */
-/* ========================= */
+// ================= SIDEBAR =================
 
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 
-menuBtn.onclick = () => {
+menuBtn.addEventListener("click", () => {
 sidebar.classList.toggle("open");
-};
+});
 
 
-/* ========================= */
-/* ELEMENTLER */
-/* ========================= */
+// ================= ELEMENTLER =================
 
+const usernameDisplay = document.getElementById("usernameDisplay");
 const msgInput = document.getElementById("messageInput");
 const sendBtn = document.getElementById("sendBtn");
 const messagesDiv = document.getElementById("messages");
 
 let currentUser = null;
-let currentUsername = "";
+let currentUsername = "Bilinmiyor";
 
 
-/* ========================= */
-/* KULLANICI KONTROL */
-/* ========================= */
+// ================= KULLANICI KONTROL =================
 
 onAuthStateChanged(auth, async (user)=>{
 
@@ -48,7 +43,10 @@ return;
 
 currentUser = user;
 
-/* Firebase kullanıcı verisi çek */
+
+// Firebase kullanıcı verisi çek
+try{
+
 const snap = await get(ref(db,"users/"+user.uid));
 
 if(snap.exists()){
@@ -57,16 +55,20 @@ const data = snap.val();
 
 currentUsername = data.username + "#" + data.tag;
 
-/* ÜSTTE GÖSTER */
-document.getElementById("usernameDisplay").innerText =
-currentUsername;
+usernameDisplay.innerText = currentUsername;
+
+}else{
+
+usernameDisplay.innerText = "Kullanıcı bulunamadı";
 
 }
 
+}catch(err){
+console.log(err);
+}
 
-/* ========================= */
-/* MESAJLARI DİNLE */
-/* ========================= */
+
+// ================= MESAJLARI DİNLE =================
 
 onValue(ref(db,"messages"), (snapshot)=>{
 
@@ -84,7 +86,6 @@ if(msg.uid === currentUser.uid){
 div.classList.add("myMessage");
 }
 
-/* username#tag mesajda görünür */
 div.innerText = msg.username + ": " + msg.text;
 
 messagesDiv.appendChild(div);
@@ -96,17 +97,16 @@ messagesDiv.appendChild(div);
 });
 
 
-/* ========================= */
-/* MESAJ GÖNDER */
-/* ========================= */
+// ================= MESAJ GÖNDER =================
 
-sendBtn.onclick = sendMessage;
+sendBtn.addEventListener("click", sendMessage);
 
-msgInput.addEventListener("keypress", function(e){
+msgInput.addEventListener("keypress", (e)=>{
 if(e.key === "Enter"){
 sendMessage();
 }
 });
+
 
 function sendMessage(){
 
