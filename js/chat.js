@@ -1,3 +1,7 @@
+import { signOut } from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
 import { auth, db } from "./firebase.js";
 
 import { onAuthStateChanged } from
@@ -30,6 +34,16 @@ const messagesDiv = document.getElementById("messages");
 
 let currentUser = null;
 let currentUsername = "Bilinmiyor";
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", async () => {
+
+await signOut(auth);
+
+window.location.href = "index.html";
+
+});
 
 
 // ================= KULLANICI KONTROL =================
