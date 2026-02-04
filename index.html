@@ -2,9 +2,11 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MecagaChat</title>
 
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -15,21 +17,23 @@
 
 <h2>Giriş / Kayıt</h2>
 
-<input id="username" placeholder="Kullanıcı adı">
+<input id="username" placeholder="Kullanıcı Adı">
 
 <input id="email" placeholder="Gmail">
 
 <input id="password" type="password" placeholder="Şifre">
 
 <div class="auth-buttons">
+
 <button onclick="register()">Kayıt Ol</button>
+
 <button onclick="login()">Giriş Yap</button>
-</div>
-
-<p id="authStatus"></p>
 
 </div>
 
+</div>
+
+<!-- AUTH DOSYASI -->
 <script type="module" src="auth.js"></script>
 
 </body>
