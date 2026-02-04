@@ -14,6 +14,9 @@ function generateID(){
 return Math.floor(1000 + Math.random() * 9000);
 }
 
+
+/* KAYIT */
+
 window.register = async function(){
 
 const username = document.getElementById("username").value;
@@ -27,7 +30,8 @@ return;
 
 try{
 
-const userCred = await createUserWithEmailAndPassword(auth,email,password);
+const userCred =
+await createUserWithEmailAndPassword(auth,email,password);
 
 const id = generateID();
 
@@ -35,6 +39,34 @@ await setDoc(doc(db,"users",userCred.user.uid),{
 username: username,
 tag: username + "#" + id
 });
+
+window.location.href = "chat.html";
+
+}catch(err){
+alert(err.message);
+}
+
+}
+
+
+/* GİRİŞ */
+
+window.login = async function(){
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(auth,email,password);
+
+window.location.href = "chat.html";
+
+}catch(err){
+alert(err.message);
+}
+
+}});
 
 window.location.href="chat.html";
 
