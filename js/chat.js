@@ -1,40 +1,104 @@
 import { auth, db } from "./firebase.js";
 
-import { 
-onAuthStateChanged,
-signOut 
+import {
+onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
-ref,
-push,
-onValue,
-get
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+doc,
+getDoc,
+collection,
+addDoc,
+onSnapshot,
+query,
+orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+import {
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const menuBtn = document.getElementById("menuBtn");
-const sidebar = document.getElementById("sidebar");
-menuBtn.onclick = () => sidebar.classList.toggle("open");
-
-
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("messageInput");
+const userTag = document.getElementById("userTag");
 const logoutBtn = document.getElementById("logoutBtn");
-logoutBtn.onclick = async () => {
+
+let currentUserTag = "";
+
+/* Kullanıcı kontrol */
+
+onAuthStateChanged(auth, async (user) => {
+
+if(!user){
+window.location.href="index.html";
+return;
+}
+
+const userDoc = await getDoc(doc(db,"users",user.uid));
+currentUserTag = userDoc.data().tag;
+
+userTag.innerText = currentUserTag;
+
+loadMessages();
+
+});
+
+
+/* Mesaj Gönder */
+
+window.sendMessage = async function(){
+
+if(messageInput.value.trim()=="") return;
+
+await addDoc(collection(db,"messages"),{
+
+user: currentUserTag,
+text: messageInput.value,
+time: Date.now()
+
+});
+
+messageInput.value="";
+
+}
+
+
+/* Mesajları Yükle */
+
+function loadMessages(){
+
+const q = query(collection(db,"messages"), orderBy("time"));
+
+onSnapshot(q,(snapshot)=>{
+
+chatBox.innerHTML="";
+
+snapshot.forEach((doc)=>{
+
+const data = doc.data();
+
+const div = document.createElement("div");
+div.className="message";
+
+div.innerText = data.user + " : " + data.text;
+
+chatBox.appendChild(div);
+
+});
+
+});
+
+}
+
+
+/* Çıkış */
+
+logoutBtn.onclick = async ()=>{
+
 await signOut(auth);
-window.location.href = "index.html";
-};
+window.location.href="index.html";
 
-
-const usernameDisplay = document.getElementById("usernameDisplay");
-const msgInput = document.getElementById("messageInput");
-const sendBtn = document.getElementById("sendBtn");
-const messagesDiv = document.getElementById("messages");
-
-let currentUser;
-let currentUsername;
-
-
-/* KULLANICI */
+}/* KULLANICI */
 
 onAuthStateChanged(auth, async (user)=>{
 
