@@ -9,30 +9,29 @@
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen" class="authBox">
-  <h2>💬 MecagaChat</h2>
+<div class="container">
 
-  <input id="loginEmail" type="email" placeholder="Email">
-  <input id="loginPassword" type="password" placeholder="Şifre">
+  <h1 class="logo">💬 MecagaChat</h1>
 
-  <button onclick="login()">Giriş Yap</button>
-  <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
+  <div id="registerBox" class="box">
+    <input id="username" placeholder="Kullanıcı Adı">
+    <input id="email" type="email" placeholder="Gmail">
+    <input id="password" type="password" placeholder="Şifre">
+
+    <button onclick="register()">Kayıt Ol</button>
+    <button class="secondary" onclick="showLogin()">Zaten hesabım var</button>
+  </div>
+
+
+  <div id="loginBox" class="box hidden">
+    <input id="loginEmail" type="email" placeholder="Gmail">
+    <input id="loginPassword" type="password" placeholder="Şifre">
+
+    <button onclick="login()">Giriş Yap</button>
+    <button class="secondary" onclick="showRegister()">Kayıt Ol</button>
+  </div>
+
 </div>
-
-
-<!-- REGISTER -->
-<div id="registerScreen" class="authBox hidden">
-  <h2>✨ Kayıt Ol</h2>
-
-  <input id="registerUsername" placeholder="Kullanıcı Adı">
-  <input id="registerEmail" type="email" placeholder="Email">
-  <input id="registerPassword" type="password" placeholder="Şifre">
-
-  <button onclick="register()">Kayıt Ol</button>
-  <button class="secondary" onclick="showLogin()">Geri Dön</button>
-</div>
-
 
 
 <!-- Firebase -->
