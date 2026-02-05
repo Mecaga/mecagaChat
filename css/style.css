@@ -1,83 +1,43 @@
 body{
-margin:0;
-font-family:Arial;
-background:#1e1f22;
-color:white;
+  background:#0f1220;
+  font-family:Arial;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
-.logo{
-text-align:center;
-margin-top:50px;
+.authBox{
+  background:#1b1f3b;
+  padding:25px;
+  border-radius:12px;
+  width:280px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  text-align:center;
 }
 
-.auth-box{
-width:300px;
-margin:30px auto;
-display:flex;
-flex-direction:column;
-gap:10px;
+input{
+  padding:10px;
+  border-radius:6px;
+  border:none;
 }
 
-.auth-box input{
-padding:10px;
-border:none;
-border-radius:6px;
+button{
+  padding:10px;
+  border:none;
+  border-radius:6px;
+  background:#5865f2;
+  color:white;
+  cursor:pointer;
 }
 
-.auth-buttons{
-display:flex;
-gap:10px;
+.secondary{
+  background:#444;
 }
 
-.auth-buttons button{
-flex:1;
-padding:10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:#5865f2;
-color:white;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#2b2d31;
-padding:10px;
-}
-
-.chat-box{
-height:70vh;
-overflow-y:auto;
-padding:10px;
-}
-
-.message{
-margin:5px 0;
-}
-
-.message-bar{
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-background:#2b2d31;
-padding:10px;
-}
-
-.message-bar input{
-flex:1;
-padding:10px;
-border:none;
-border-radius:6px;
-}
-
-.message-bar button{
-margin-left:10px;
-padding:10px;
-border:none;
-border-radius:6px;
-background:#5865f2;
-color:white;
+.hidden{
+  display:none;
 }
